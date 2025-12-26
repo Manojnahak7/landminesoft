@@ -10,7 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/consultations")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins="https://landminesoft.vercel.app")
 public class ConsultationController {
 
     private final ConsultationService service;
