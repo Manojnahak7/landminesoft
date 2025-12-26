@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins="https://landminesoft.vercel.app")
+
 public class ContactController {
 
     private final ContactMessageRepository contactMessageRepository;
