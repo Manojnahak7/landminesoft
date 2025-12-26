@@ -33,7 +33,7 @@ const ScheduleFreeConsultation = () => {
 
     try {
       // const res = await fetch("http://localhost:7689/api/consultations", {
-            const res = await fetch("${API_BASE}/api/consultations", {
+const res = await fetch(`${API_BASE}/api/consultations`, {
 
         method: "POST",
         headers: {
