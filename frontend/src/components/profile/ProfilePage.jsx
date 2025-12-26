@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../profile/ProfilePage.css";
 import { useAuth } from "../../context/AuthContext";
 
-const API_BASE = "http://localhost:7689";
+// const API_BASE = "http://localhost:7689";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const ProfilePage = () => {
   const { user, login } = useAuth();
