@@ -1,0 +1,130 @@
+package com.example.LandmineSoft.service;
+
+import com.example.LandmineSoft.entity.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailService {
+
+    private final JavaMailSender mailSender;
+
+    @Value("${spring.mail.username:careers@landminesoft.com}")
+    private String fromEmail;
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+//    public void sendPasswordResetEmail(User user, String resetToken) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom(fromEmail);
+//        message.setTo(user.getEmail());
+//        message.setSubject("🔒 Landmine Soft - Reset Your Password");
+//        message.setText("""
+//            Hi %s,
+//
+//            Click this link to reset your password:
+//            http://localhost:5173/auth/reset-password?token=%s
+//
+//            This link expires in 1 hour.
+//
+//            If you didn't request this, ignore this email.
+//
+//            Best,
+//            Landmine Soft Team
+//            """.formatted(user.getFullName(), resetToken));
+//
+//        mailSender.send(message);
+//    }
+
+    public void sendPasswordResetEmail(User user, String resetToken) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(user.getEmail());
+        message.setSubject("🔒 Landmine Soft - Reset Your Password");
+
+        // 🔥 DYNAMIC FRONTEND URL
+        String frontendUrl = "http://localhost:5173";  // Default dev
+        String resetUrl = frontendUrl + "/auth?token=" + resetToken;
+
+        message.setText("""
+        Hi %s,
+        
+        Click this link to reset your password:
+        %s
+        
+        This link expires in 1 hour.
+        
+        If you didn't request this, ignore this email.
+        
+        Best,
+        Landmine Soft Team
+        """.formatted(user.getFullName(), resetUrl));
+
+        mailSender.send(message);
+    }
+
+
+    // 🔥 NEW: Job Application Confirmation Email
+    public void sendApplicationConfirmation(String fullName, String toEmail, String jobTitle) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("✅ Application Received - " + jobTitle);
+
+        String emailBody = """
+            Hello %s,
+            
+            🎉 **You've successfully applied for the position of %s at Landmine Soft!**
+            
+            📋 **What's Next?**
+            • We're currently reviewing all profiles
+            • If your profile matches this position, our recruiter will reach out within **3-5 business days**
+            • Keep an eye on your **inbox** (and **spam folder**) 
+            
+            💡 **Pro Tip:** Make sure your resume has the right keywords from the job description!
+            
+            👨‍💼 **Application Details:**
+            • Name: %s
+            • Email: %s
+            • Expected CTC: %s
+            
+            📧 Questions? Reply to this email or contact careers@landminesoft.com
+            
+            Best regards,
+            🚀 The Landmine Soft Team
+            careers@landminesoft.com
+            """.formatted(
+                fullName,
+                jobTitle,
+                fullName,
+                toEmail,
+                "Expected Salary" // You can pass this too
+        );
+
+        message.setText(emailBody);
+        mailSender.send(message);
+    }
+
+
+
+    // ✅ YE GENERIC METHOD ADD KAR (sabhi emails ke liye)
+    public void sendEmail(String toEmail, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailMessage.setFrom(fromEmail);
+
+        try {
+            mailSender.send(mailMessage);
+            System.out.println("✅ Email sent to: " + toEmail);
+        } catch (Exception e) {
+            System.err.println("❌ Email send failed: " + e.getMessage());
+        }
+    }
+
+}
