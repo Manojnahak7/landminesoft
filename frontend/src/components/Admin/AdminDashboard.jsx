@@ -80,7 +80,9 @@ const AdminDashboard = () => {
 
   const fetchConsultations = async () => {
     try {
-      const res = await fetch("http://localhost:7689/api/consultations");
+      // const res = await fetch("http://localhost:7689/api/consultations");
+            const res = await fetch(`${API_BASE}/api/consultations`);
+
       if (!res.ok) throw new Error("Failed to fetch consultations");
       const data = await res.json();
       setConsultations(data);
