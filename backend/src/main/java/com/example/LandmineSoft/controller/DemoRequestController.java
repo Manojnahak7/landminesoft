@@ -11,7 +11,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/demo-requests")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
+        @CrossOrigin(origins="https://landminesoft.vercel.app")
+
 public class DemoRequestController {
 
     private final DemoRequestRepository demoRequestRepository;
