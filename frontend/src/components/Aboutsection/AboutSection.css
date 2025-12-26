@@ -1,0 +1,77 @@
+.about {
+  padding: 80px 80px 90px;
+  background: #ffffff;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #1f1933;
+}
+
+.about-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.about-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #9a63ff;
+  margin-bottom: 10px;
+}
+
+.about-title {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 18px;
+}
+
+.about-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5a536f;
+  margin-bottom: 10px;
+}
+
+/* Right stats */
+.about-right {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.about-stat {
+  background: #f8f7ff;
+  border-radius: 18px;
+  padding: 14px 18px;
+  border: 1px solid #e1ddf5;
+}
+
+.about-stat-number {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #7b46ff;
+  margin-bottom: 4px;
+}
+
+.about-stat-label {
+  font-size: 13px;
+  color: #5a536f;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about {
+    padding: 60px 20px 70px;
+  }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,463 @@
+/* .schedule-section {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  color: #1e293b;
+  display: flex;
+  justify-content: center;   
+  align-items: center;      
+  min-height: 100vh;
+}
+
+.schedule-container {
+  width: 100%;
+  max-width: 880px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 32px 44px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin: 0 auto;            
+}
+
+.schedule-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.schedule-header p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.schedule-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.form-group label span {
+  color: #ef4444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 14px 0px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #fafbfc;
+  color: #1e293b;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #4b5563;
+}
+
+.radio-group label:hover {
+  background: #f1f5f9;
+}
+
+.radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+.form-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-actions button {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: stretch;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.form-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+}
+
+.form-actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-msg {
+  font-size: 15px;
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .schedule-section {
+    padding: 40px 16px;
+    align-items: flex-start;     
+  }
+
+  .schedule-container {
+    padding: 32px 24px 36px;
+    margin: 24px auto;
+  }
+
+  .schedule-header h2 {
+    font-size: 24px;
+  }
+
+  .schedule-header p {
+    font-size: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-actions button {
+    padding: 18px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-section {
+    padding: 32px 12px;
+  }
+
+  .schedule-container {
+    padding: 24px 20px 30px;
+  }
+}
+
+
+.form-group input::placeholder {
+  color: #9ca3af;
+  padding-left: 2px;
+  text-indent: 16px;  
+}
+.form-group input{
+  padding-left: 10px;
+}
+
+.form-group textarea::placeholder {
+  color: #9ca3af;
+  padding-left: 10px !important;
+}
+
+textarea{
+  padding-left: 10px;
+  color: red;
+}
+
+
+.form-group select {
+  padding-left: 12px !important;
+}
+
+
+
+.form-group input[type="date"]{
+  padding-left: 10px !important;
+}
+.form-group input[type="time"]{
+  padding-left: 13px 7px !important;
+} */
+
+
+
+.schedule-section {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.schedule-container {
+  width: 100%;
+  max-width: 880px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 32px 44px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin: 0 auto;
+}
+
+.schedule-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.schedule-header p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.schedule-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ✅ FIXED: Proper 2-column grid */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start; /* Top alignment for different height fields */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Full width in grid cell */
+  min-height: 80px; /* Consistent height for alignment */
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.form-group label span {
+  color: #ef4444;
+}
+
+/* ✅ FIXED: Consistent padding for ALL inputs */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; /* Full width */
+  padding: 14px 16px; /* Top/bottom 14px, left/right 16px */
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #fafbfc;
+  color: #1e293b;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box; /* Padding include in width */
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #4b5563;
+}
+
+.radio-group label:hover {
+  background: #f1f5f9;
+}
+
+.radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+.form-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-actions button {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: stretch;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.form-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+}
+
+.form-actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-msg {
+  font-size: 15px;
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .schedule-section {
+    padding: 40px 16px;
+    align-items: flex-start;
+  }
+
+  .schedule-container {
+    padding: 32px 24px 36px;
+    margin: 24px auto;
+  }
+
+  .schedule-header h2 {
+    font-size: 24px;
+  }
+
+  .schedule-header p {
+    font-size: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr; /* Single column mobile */
+    gap: 20px;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-actions button {
+    padding: 18px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-section {
+    padding: 32px 12px;
+  }
+
+  .schedule-container {
+    padding: 24px 20px 30px;
+  }
+}
+
+
+

@@ -1,0 +1,259 @@
+/* Outer section */
+.demo-center {
+  background-color: #f5f5f7;
+  min-height: calc(100vh - 70px);
+  padding: 64px 24px 48px;
+  display: flex;
+  justify-content: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.demo-center-inner {
+  width: 100%;
+  max-width: 1180px;
+}
+
+/* Top heading (first image style) */
+.demo-center-header {
+  margin-bottom: 40px;
+}
+
+.demo-center-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.demo-center-header p {
+  font-size: 15px;
+  color: #4b5563;
+}
+
+/* Cards grid (second image style) */
+.demo-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.demo-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  padding: 18px 18px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Card top: icon + product name/tagline */
+.demo-card-top {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+}
+
+.demo-card-icon {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.demo-card-product h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.demo-card-product span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Card body */
+.demo-card-body h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+.demo-card-body p {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.45;
+}
+
+/* Request a demo button */
+.demo-card-btn {
+  margin-top: 14px;
+  align-self: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background-color: #e11d48; /* pink like example */
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.15s ease, transform 0.1s ease,
+    box-shadow 0.15s ease;
+  box-shadow: 0 6px 14px rgba(190, 24, 93, 0.35);
+}
+
+.demo-card-btn:hover {
+  background-color: #be123c;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(190, 24, 93, 0.45);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .demo-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .demo-center {
+    padding: 40px 16px 32px;
+  }
+
+  .demo-center-header h1 {
+    font-size: 26px;
+  }
+
+  .demo-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Modal overlay */
+.demo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Modal box */
+.demo-modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 10px;
+  padding: 18px 20px 20px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+}
+
+.demo-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.demo-modal-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.demo-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.demo-modal-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.demo-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.demo-modal-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-modal-field label {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 3px;
+}
+
+.demo-modal-field input {
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.demo-modal-field input:focus {
+  border-color: #ff8a3c;
+  box-shadow: 0 0 0 1px rgba(255, 138, 60, 0.18);
+}
+
+.demo-modal-submit {
+  margin-top: 4px;
+  align-self: flex-end;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #ff8a3c, #f97316);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+
+.demo-success-message {
+  padding: 24px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+}
+
+.success-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.demo-success-message p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

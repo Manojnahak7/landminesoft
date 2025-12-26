@@ -1,0 +1,133 @@
+/* ViewProject.css */
+.coming-soon-section {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coming-soon-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.coming-soon-content {
+  background: white;
+  padding: 60px 40px;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.icon-wrapper {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 32px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+}
+
+.rocket-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.coming-soon-title {
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.coming-soon-text {
+  font-size: 18px;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features-preview {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.features-preview h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.features-preview ul {
+  list-style: none;
+  padding: 0;
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.features-preview li {
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0);
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #374151;
+  font-weight: 500;
+  border-left: 4px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.features-preview li:hover {
+  background: linear-gradient(90deg, #eff6ff, #dbeafe);
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .coming-soon-section {
+    padding: 60px 16px;
+  }
+  
+  .coming-soon-content {
+    padding: 48px 32px;
+  }
+  
+  .coming-soon-title {
+    font-size: 28px;
+  }
+  
+  .coming-soon-text {
+    font-size: 16px;
+  }
+  
+  .icon-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .rocket-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .coming-soon-content {
+    padding: 40px 24px;
+  }
+}

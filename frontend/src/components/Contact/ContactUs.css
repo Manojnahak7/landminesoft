@@ -1,0 +1,137 @@
+.contact-section {
+  min-height: calc(100vh - 70px); /* navbar ke niche */
+  padding: 80px 16px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #f4f5f7;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.contact-card {
+  width: 100%;
+  max-width: 720px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px 24px 28px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.contact-card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.contact-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.contact-success,
+.contact-error {
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.contact-success {
+  background-color: #e6f4ea;
+  color: #1b5e20;
+}
+
+.contact-error {
+  background-color: #ffe6e6;
+  color: #b71c1c;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-field label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.contact-field input,
+.contact-field textarea {
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #d0d4da;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  background-color: #ffffff;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: #ff8a3c;
+  box-shadow: 0 0 0 1px rgba(255, 138, 60, 0.15);
+}
+
+.contact-submit-btn {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: none;
+  background-color: #ff8a3c;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+  background-color: #f17424;
+}
+
+.contact-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.contact-extra {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #777;
+}
+
+.contact-extra a {
+  color: #ff8a3c;
+  text-decoration: none;
+}
+
+.contact-extra a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .contact-card {
+    padding: 18px;
+  }
+
+  .contact-row {
+    grid-template-columns: 1fr;
+  }
+}

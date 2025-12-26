@@ -1,0 +1,151 @@
+/* Section wrapper */
+.sp-section {
+  padding: 80px 80px 100px;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+/* Top heading area */
+.sp-header {
+  max-width: 960px;
+  margin: 0 auto 60px;
+}
+
+.sp-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #7c7c7c;
+  margin-bottom: 14px;
+}
+
+.sp-title {
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #222222;
+}
+
+/* Cards grid */
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* Single card outer (for gradient border + shadow) */
+.sp-card {
+  background: linear-gradient(135deg, #7b5cff, #ff7edb);
+  padding: 2px;
+  border-radius: 32px;
+  box-shadow: 0 18px 40px rgba(84, 63, 188, 0.18);
+}
+
+/* Inner white card */
+.sp-card-inner {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 40px 40px 34px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Number circle */
+.sp-card-number {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 20%, #ffffff, #f2ecff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: #9c63ff;
+  margin-bottom: 26px;
+}
+
+/* Title & text */
+.sp-card-title {
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 18px;
+}
+
+.sp-card-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555555;
+  margin-bottom: 22px;
+}
+
+.sp-card-footer {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7a7a7a;
+  margin-top: auto;
+  margin-bottom: 22px;
+}
+
+/* CTA */
+.sp-card-cta {
+  border: none;
+  background: transparent;
+  color: #8747ff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sp-card-cta span {
+  font-size: 16px;
+}
+
+/* Hover */
+.sp-card-inner:hover .sp-card-cta {
+  color: #6a30ff;
+}
+
+.sp-card-inner:hover {
+  transform: translateY(-4px);
+  transition: transform 0.18s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sp-section {
+    padding: 60px 20px 80px;
+  }
+
+  .sp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-card-inner {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .sp-card-number {
+    margin-left: 0;
+  }
+}
