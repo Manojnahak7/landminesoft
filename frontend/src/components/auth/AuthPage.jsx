@@ -3,7 +3,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "../auth/AuthPage.css";
 import { useAuth } from "../../context/AuthContext";
 
-const API_BASE = "http://localhost:7689";
+// const API_BASE = "http://localhost:7689";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const AuthPage = () => {
   const { login } = useAuth();
