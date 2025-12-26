@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./ContactUs.css";
 
-const API_BASE = "http://localhost:7689"; // apne backend ke hisaab se
+// const API_BASE = "http://localhost:7689"; 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const ContactUs = () => {
   const [form, setForm] = useState({
