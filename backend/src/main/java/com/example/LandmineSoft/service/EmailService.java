@@ -47,7 +47,8 @@ public class EmailService {
         message.setSubject("🔒 Landmine Soft - Reset Your Password");
 
         // 🔥 DYNAMIC FRONTEND URL
-        String frontendUrl = "http://localhost:5173";  // Default dev
+        // String frontendUrl = "http://localhost:5173";
+        String frontendUrl="https://landminesoft.vercel.app";
         String resetUrl = frontendUrl + "/auth?token=" + resetToken;
 
         message.setText("""
