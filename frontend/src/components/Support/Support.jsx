@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Support.css";
 
-const API_BASE = "http://localhost:7689";
+// const API_BASE = "http://localhost:7689";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const Support = () => {
   const [form, setForm] = useState({
