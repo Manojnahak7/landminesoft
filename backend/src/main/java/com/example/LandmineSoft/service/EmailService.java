@@ -156,7 +156,9 @@ public class EmailService {
                 .build();
 
         // From email (Resend में allow हो ऐसा रखना)
-        this.fromEmail = "Landmine Soft <no-reply@landminesoft.com>";
+        // this.fromEmail = "Landmine Soft <no-reply@landminesoft.com>";
+            this.fromEmail = "Landmine Soft <onboarding@resend.dev>";
+
     }
 
     // ✅ PASSWORD RESET EMAIL
