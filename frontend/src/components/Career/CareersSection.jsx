@@ -128,7 +128,6 @@ const CareersSection = () => {
       return;
     }
 
-    // console.log("✅ User authenticated:", user.email);
     setSelectedJob(job);
 
     // 🔥 Load user profile data
