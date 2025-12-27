@@ -134,155 +134,138 @@ package com.example.LandmineSoft.service;
 
 import com.example.LandmineSoft.entity.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final WebClient resendClient;
+    private final String fromEmail;
 
-    // @Value("${spring.mail.username:careers@landminesoft.com}")
-     @Value("${spring.mail.username:landminesoft@gmail.com}")
+    public EmailService(
+            @Value("${RESEND_API_KEY}") String resendApiKey
+    ) {
+        this.resendClient = WebClient.builder()
+                .baseUrl("https://api.resend.com")
+                .defaultHeader("Authorization", "Bearer " + resendApiKey)
+                .build();
 
-    private String fromEmail;
-
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+        // From email (Resend में allow हो ऐसा रखना)
+        this.fromEmail = "Landmine Soft <no-reply@landminesoft.com>";
     }
 
+    // ✅ PASSWORD RESET EMAIL
     public void sendPasswordResetEmail(User user, String resetToken) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(user.getEmail());
-        message.setSubject("🔒 Landmine Soft - Reset Your Password");
-
-        // 🔥 PRODUCTION URL
         String frontendUrl = "https://landminesoft.vercel.app";
         String resetUrl = frontendUrl + "/auth?token=" + resetToken + "&email=" + user.getEmail();
 
-        message.setText("""
-            Hi %s,
-            
-            Click this link to reset your password:
-            %s
-            
-            ⏰ This link expires in 1 hour.
-            
-            If you didn't request this, safely ignore this email.
-            
-            Best regards,
-            🚀 Landmine Soft Team
-            careers@landminesoft.com
-            """.formatted(user.getFullName(), resetUrl));
+        String textBody = """
+                Hi %s,
 
-        // 🔥 FULL LOGGING + ERROR HANDLING
-        try {
-            System.out.println("🔥 Attempting PASSWORD RESET email to: " + user.getEmail());
-            System.out.println("📧 From: " + fromEmail + " | To: " + user.getEmail());
-            mailSender.send(message);
-            System.out.println("✅ PASSWORD RESET EMAIL SUCCESS to: " + user.getEmail());
-        } catch (Exception e) {
-            System.err.println("❌ PASSWORD RESET EMAIL FAILED for " + user.getEmail());
-            System.err.println("❌ ERROR: " + e.getMessage());
-            System.err.println("❌ ERROR TYPE: " + e.getClass().getSimpleName());
-            e.printStackTrace();
-        }
+                Click this link to reset your password:
+                %s
+
+                This link expires in 1 hour.
+
+                If you didn't request this, safely ignore this email.
+
+                Best regards,
+                Landmine Soft Team
+                """.formatted(user.getFullName(), resetUrl);
+
+        System.out.println("🔥 Attempting PASSWORD RESET email to: " + user.getEmail());
+        sendViaResend(
+                user.getEmail(),
+                "🔒 Landmine Soft - Reset Your Password",
+                textBody
+        );
     }
 
+    // ✅ JOB APPLICATION CONFIRMATION
     public void sendApplicationConfirmation(String fullName, String toEmail, String jobTitle) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(toEmail);
-        message.setSubject("✅ Application Received - " + jobTitle);
+        String textBody = """
+                Hello %s,
 
-        String emailBody = """
-            Hello %s,
-            
-            🎉 **You've successfully applied for the position of %s at Landmine Soft!**
-            
-            📋 **What's Next?**
-            • We're reviewing all profiles
-            • Recruiter will reach out within **3-5 business days**
-            • Check your **inbox** (and **spam folder**) 
-            
-            💡 **Pro Tip:** Resume keywords match job description!
-            
-            👨‍💼 **Application Details:**
-            • Name: %s
-            • Email: %s
-            • Position: %s
-            
-            📧 Questions? Reply to this email
-            
-            Best regards,
-            🚀 Landmine Soft Team
-            """.formatted(fullName, jobTitle, fullName, toEmail, jobTitle);
+                You've successfully applied for the position of %s at Landmine Soft!
 
-        message.setText(emailBody);
+                What's next?
+                • We're reviewing all profiles
+                • Our team will reach out within 3–5 business days
+                • Keep an eye on your inbox (and spam folder)
 
-        // 🔥 FULL LOGGING
-        try {
-            System.out.println("🔥 Attempting APPLICATION CONFIRMATION to: " + toEmail);
-            mailSender.send(message);
-            System.out.println("✅ APPLICATION CONFIRMATION SUCCESS to: " + toEmail + " | Job: " + jobTitle);
-        } catch (Exception e) {
-            System.err.println("❌ APPLICATION CONFIRMATION FAILED for " + toEmail);
-            System.err.println("❌ ERROR: " + e.getMessage());
-            e.printStackTrace();
-        }
+                Application Details:
+                • Name: %s
+                • Email: %s
+                • Position: %s
+
+                Best regards,
+                Landmine Soft Team
+                """.formatted(fullName, jobTitle, fullName, toEmail, jobTitle);
+
+        System.out.println("🔥 Attempting APPLICATION CONFIRMATION to: " + toEmail);
+        sendViaResend(
+                toEmail,
+                "✅ Application Received - " + jobTitle,
+                textBody
+        );
     }
 
+    // ✅ APPLICATION REJECTION (direct method भी रख रहे हैं)
     public void sendApplicationRejectionEmail(String fullName, String toEmail, String jobTitle) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(toEmail);
-        message.setSubject("📧 Update on your " + jobTitle + " application");
+        String textBody = """
+                Hello %s,
 
-        String emailBody = """
-            Hello %s,
-            
-            Thank you for applying to %s at Landmine Soft.
-            
-            After careful consideration, we will not be moving forward with your application.
-            
-            We appreciate your interest and wish you success!
-            
-            Best regards,
-            🚀 Landmine Soft Team
-            """.formatted(fullName, jobTitle);
+                Thank you for applying for the %s position at Landmine Soft.
 
-        message.setText(emailBody);
+                After careful consideration, we will not be moving forward with your application.
 
-        try {
-            System.out.println("🔥 Attempting REJECTION email to: " + toEmail);
-            mailSender.send(message);
-            System.out.println("✅ REJECTION EMAIL SUCCESS to: " + toEmail);
-        } catch (Exception e) {
-            System.err.println("❌ REJECTION EMAIL FAILED for " + toEmail);
-            System.err.println("❌ ERROR: " + e.getMessage());
-            e.printStackTrace();
-        }
+                We truly appreciate your interest and wish you success in your career.
+
+                Best regards,
+                Landmine Soft Team
+                """.formatted(fullName, jobTitle);
+
+        System.out.println("🔥 Attempting REJECTION email to: " + toEmail);
+        sendViaResend(
+                toEmail,
+                "📧 Update on your " + jobTitle + " application",
+                textBody
+        );
     }
 
-    // Generic email method
+    // ✅ GENERIC EMAIL (JobApplicationService वाला भी इसी का use कर रहा है)
     public void sendEmail(String toEmail, String subject, String message) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(toEmail);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-        mailMessage.setFrom(fromEmail);
+        System.out.println("🔥 Attempting GENERIC email to: " + toEmail);
+        sendViaResend(toEmail, subject, message);
+    }
 
+    // ✅ COMMON RESEND CALL
+    private void sendViaResend(String to, String subject, String textBody) {
         try {
-            System.out.println("🔥 Attempting GENERIC email to: " + toEmail);
-            mailSender.send(mailMessage);
-            System.out.println("✅ GENERIC EMAIL SUCCESS to: " + toEmail);
+            resendClient.post()
+                    .uri("/emails")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(Map.of(
+                            "from", fromEmail,
+                            "to", List.of(to),
+                            "subject", subject,
+                            "text", textBody
+                    ))
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .doOnError(err ->
+                            System.err.println("❌ RESEND EMAIL FAILED: " + err.getMessage())
+                    )
+                    .block(); // simple sync; बाद में async कर सकते हो
+
+            System.out.println("✅ RESEND EMAIL SUCCESS to: " + to);
         } catch (Exception e) {
-            System.err.println("❌ GENERIC EMAIL FAILED for " + toEmail);
-            System.err.println("❌ ERROR: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("❌ RESEND EMAIL EXCEPTION for " + to + ": " + e.getMessage());
         }
     }
 }
-
