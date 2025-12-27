@@ -195,7 +195,11 @@
   padding: 1rem 0;
   border-top: 1px solid #eee;
 }
-.auth-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.auth-section {
+  /* min-height: 100vh;  */
+  display: flex; align-items: 
+  center; justify-content: center;
+}
 .auth-card { max-width: 800px; width: 100%; padding: 2rem; }
 .auth-form { display: flex; flex-direction: column; gap: 1rem; }
 .auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
