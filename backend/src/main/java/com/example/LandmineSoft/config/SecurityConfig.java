@@ -34,6 +34,7 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("https://landminesoft.vercel.app");
+            configuration.addAllowedOrigin("https://www.landminesoft.com");
 //        configuration.setAllowedMethods(java.util.List.of("*"));
         configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
