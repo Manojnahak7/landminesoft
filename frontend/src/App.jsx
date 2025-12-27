@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate,  useLocation} from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Footer from "./components/Footer/Footer";
 import Hero from "./components/Hero/Hero";
@@ -33,6 +33,20 @@ export const LoadingSpinner = () => (
     Loading your session...
   </div>
 );
+
+const HostBasedRedirect = () => {
+  const location = useLocation();
+
+  if (
+    window.location.host === "careers.landminesoft.com" &&
+    location.pathname !== "/careers"
+  ) {
+    return <Navigate to="/careers" replace />;
+  }
+
+  return null;
+};
+
 
 // 👈 PROTECTED ROUTE (loading + auth check)
 export const ProtectedRoute = ({ children }) => {
@@ -146,6 +160,7 @@ export const ViewPage = () => (
 export const AppContent = () => {
   return (
     <BrowserRouter>
+      <HostBasedRedirect />
       <Routes>
         {/* 👈 PUBLIC ROUTES */}
         <Route path="/" element={<HomePage />} />
