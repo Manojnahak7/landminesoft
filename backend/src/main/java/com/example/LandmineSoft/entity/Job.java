@@ -2,11 +2,11 @@ package com.example.LandmineSoft.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+// import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+// @Data
 @Table(name = "jobs")
 public class Job {
     @Id
@@ -16,7 +16,11 @@ public class Job {
     private String title;
     private String type; // "Full-time · Remote"
     private String location;
+    // private String summary;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String summary;
+
     private String salary;      // 👈 NEW!
     private String experience;
 
