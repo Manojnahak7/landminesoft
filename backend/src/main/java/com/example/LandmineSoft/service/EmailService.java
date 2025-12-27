@@ -143,7 +143,9 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.username:careers@landminesoft.com}")
+    // @Value("${spring.mail.username:careers@landminesoft.com}")
+     @Value("${spring.mail.username:landminesoft@gmail.com}")
+
     private String fromEmail;
 
     public EmailService(JavaMailSender mailSender) {
