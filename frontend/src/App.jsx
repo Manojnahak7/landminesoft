@@ -34,18 +34,39 @@ export const LoadingSpinner = () => (
   </div>
 );
 
+// const HostBasedRedirect = () => {
+//   const location = useLocation();
+
+//   if (
+//     window.location.host === "careers.landminesoft.com" &&
+//     location.pathname !== "/careers"
+//   ) {
+//     return <Navigate to="/careers" replace />;
+//   }
+
+//   return null;
+// };
+
 const HostBasedRedirect = () => {
   const location = useLocation();
+  const [checked, setChecked] = React.useState(false);
 
-  if (
-    window.location.host === "careers.landminesoft.com" &&
-    location.pathname !== "/careers"
-  ) {
-    return <Navigate to="/careers" replace />;
-  }
+  React.useEffect(() => {
+    if (!checked) {
+      if (
+        window.location.host === "careers.landminesoft.com" &&
+        location.pathname === "/"
+      ) {
+        // sirf root pe ho tab hi redirect
+        window.history.replaceState(null, "", "/careers");
+      }
+      setChecked(true);
+    }
+  }, [checked, location.pathname]);
 
   return null;
 };
+
 
 
 // 👈 PROTECTED ROUTE (loading + auth check)
