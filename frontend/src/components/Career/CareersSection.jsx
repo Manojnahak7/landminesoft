@@ -473,8 +473,7 @@ const CareersSection = () => {
                         fontSize: "14px",
                       }}
                     >
-                      💡 <strong>Internship Opportunity:</strong> No salary
-                      fields needed. Focus on gaining real project experience!
+                      💡 <strong>Internship Opportunity:</strong> No salary. Focus on gaining real project experience!
                     </div>
                   )}
 
