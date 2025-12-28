@@ -160,16 +160,34 @@ const AdminDashboard = () => {
     }
   };
 
+  // const fetchApplications = async () => {
+  //   try {
+  //     const res = await fetch(`${API_BASE}/api/auth/admin/applications`);
+  //     if (!res.ok) throw new Error("Failed to fetch applications");
+  //     const data = await res.json();
+  //     setApplications(data);
+  //   } catch (err) {
+  //     console.error("Applications error:", err);
+  //   }
+  // };
+
+  
   const fetchApplications = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/api/auth/admin/applications`);
-      if (!res.ok) throw new Error("Failed to fetch applications");
-      const data = await res.json();
-      setApplications(data);
-    } catch (err) {
-      console.error("Applications error:", err);
-    }
-  };
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/admin/applications`);
+    if (!res.ok) throw new Error("Failed to fetch applications");
+    const allApps = await res.json();
+    
+    // 🔥 Sirf PENDING + IN_PROGRESS
+    const filteredApps = allApps.filter(app => 
+      ['PENDING', 'IN_PROGRESS'].includes(app.status?.toUpperCase())
+    );
+    
+    setApplications(filteredApps);  // ✅ Ab length = 3
+  } catch (err) {
+    console.error("Applications error:", err);
+  }
+};
 
   const fetchJobs = async () => {
     try {
