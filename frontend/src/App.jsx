@@ -50,23 +50,22 @@ export const LoadingSpinner = () => (
 
 const HostBasedRedirect = () => {
   const location = useLocation();
+  const navigate = useNavigate(); 
   const [checked, setChecked] = React.useState(false);
 
   React.useEffect(() => {
-    if (!checked) {
-      if (
-        window.location.host === "careers.landminesoft.com" &&
-        location.pathname === "/"
-      ) {
-        // sirf root pe ho tab hi redirect
-        window.history.replaceState(null, "", "/careers");
+    if (!checked && window.location.host === "careers.landminesoft.com") {
+      if (location.pathname === "/") {
+        // React Router se navigate karo
+        navigate("/careers", { replace: true });
       }
       setChecked(true);
     }
-  }, [checked, location.pathname]);
+  }, [checked, location.pathname, navigate]);
 
   return null;
 };
+
 
 
 
