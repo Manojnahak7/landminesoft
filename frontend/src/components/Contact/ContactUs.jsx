@@ -20,12 +20,12 @@ const ContactUs = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-useEffect(() => {
-  fetch(`${API_BASE}/api/analytics/track-visit`, { 
-    method: 'POST',
-    credentials: 'include' 
-  }).catch(console.error);
-}, []);
+// useEffect(() => {
+//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
+//     method: 'POST',
+//     credentials: 'include' 
+//   }).catch(console.error);
+// }, []);
 
 
   const handleSubmit = async (e) => {
