@@ -179,6 +179,37 @@ export const ViewPage = () => (
 
 // 👈 MAIN APP CONTENT - NAMED EXPORT
 export const AppContent = () => {
+   React.useEffect(() => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+    
+    const trackVisit = () => {
+      fetch(`${API_BASE}/api/analytics/track-visit`, { 
+        method: 'POST',
+        credentials: 'include' 
+      }).catch(console.error);
+    };
+    
+    // Initial load
+    trackVisit();
+    
+    // Track when page becomes visible (user returns)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setTimeout(trackVisit, 1000); // 1 sec debounce
+      }
+    };
+    
+    // Track browser back/forward
+    const handlePopState = () => trackVisit();
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
   return (
     <BrowserRouter>
       <HostBasedRedirect />
