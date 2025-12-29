@@ -1,5 +1,4 @@
 package com.example.LandmineSoft.controller;
-package com.example.LandmineSoft.dto.PageVisitDto;
 import com.example.LandmineSoft.entity.PageVisit;
 import com.example.LandmineSoft.repository.PageVisitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
