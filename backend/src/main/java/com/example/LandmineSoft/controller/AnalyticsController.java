@@ -73,9 +73,21 @@ public class AnalyticsController {
     @Autowired
     private PageVisitRepository repo;
 
-    @PostMapping("/track-visit")
+    // @PostMapping("/track-visit")
+    // public ResponseEntity<Void> trackVisit() {
+    //     LocalDate today = LocalDate.now();
+    //     PageVisit visit = repo.findByVisitDate(today)
+    //             .orElseGet(() -> new PageVisit(today, 0));
+    //     visit.setCount(visit.getCount() + 1);
+    //     repo.save(visit);
+    //     return ResponseEntity.ok().build();
+    // }
+
+     @PostMapping("/track-visit")
     public ResponseEntity<Void> trackVisit() {
-        LocalDate today = LocalDate.now();
+        // 🔥 IST TIMEZONE!
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
+        
         PageVisit visit = repo.findByVisitDate(today)
                 .orElseGet(() -> new PageVisit(today, 0));
         visit.setCount(visit.getCount() + 1);
@@ -83,12 +95,26 @@ public class AnalyticsController {
         return ResponseEntity.ok().build();
     }
 
+    // @GetMapping("/visits")
+    // public List<PageVisitDto> getVisits(
+    //         @RequestParam int year,
+    //         @RequestParam int month) {
+    //     LocalDate start = LocalDate.of(year, month, 1);
+    //     LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+    //     return repo.findByVisitDateBetweenOrderByVisitDateAsc(start, end)
+    //             .stream()
+    //             .map(PageVisitDto::fromEntity)
+    //             .collect(Collectors.toList());
+    // }
+
     @GetMapping("/visits")
     public List<PageVisitDto> getVisits(
             @RequestParam int year,
             @RequestParam int month) {
+        // 🔥 IST TIMEZONE!
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        
         return repo.findByVisitDateBetweenOrderByVisitDateAsc(start, end)
                 .stream()
                 .map(PageVisitDto::fromEntity)
