@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React,{useState,useEffect} from "react";
 import "../Whylandmine/WhyLandmineSoft.css";
 
 const reasons = [
@@ -19,6 +20,14 @@ const reasons = [
     desc: "Regular stand‑ups, demo calls, and status updates keep you in the loop, with one point of contact for decisions and escalations.",
   },
 ];
+
+useEffect(() => {
+  fetch(`${API_BASE}/api/analytics/track-visit`, { 
+    method: 'POST',
+    credentials: 'include' 
+  }).catch(console.error);
+}, []);
+
 
 const WhyLandmineSoft = () => {
   return (
