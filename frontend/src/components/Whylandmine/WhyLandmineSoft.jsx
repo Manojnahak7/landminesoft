@@ -21,15 +21,16 @@ const reasons = [
   },
 ];
 
-useEffect(() => {
+
+
+
+const WhyLandmineSoft = () => {
+  useEffect(() => {
   fetch(`${API_BASE}/api/analytics/track-visit`, { 
     method: 'POST',
     credentials: 'include' 
   }).catch(console.error);
 }, []);
-
-
-const WhyLandmineSoft = () => {
   return (
     <section className="why-section">
       <div className="why-header">
