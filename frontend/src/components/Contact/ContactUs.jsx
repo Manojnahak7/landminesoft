@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./ContactUs.css";
 
 // const API_BASE = "http://localhost:7689"; 
@@ -19,6 +19,14 @@ const ContactUs = () => {
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+useEffect(() => {
+  fetch(`${API_BASE}/api/analytics/track-visit`, { 
+    method: 'POST',
+    credentials: 'include' 
+  }).catch(console.error);
+}, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
