@@ -1,5 +1,4 @@
-// src/components/ScheduleFreeConsultation/ScheduleFreeConsultation.jsx
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../Schedule/ScheduleFreeConsultation.css";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const ScheduleFreeConsultation = () => {
@@ -26,6 +25,13 @@ const ScheduleFreeConsultation = () => {
       [name]: value,
     }));
   };
+
+useEffect(() => {
+  fetch(`${API_BASE}/api/analytics/track-visit`, { 
+    method: 'POST',
+    credentials: 'include' 
+  }).catch(console.error);
+}, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
