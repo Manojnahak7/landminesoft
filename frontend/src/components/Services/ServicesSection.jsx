@@ -33,12 +33,12 @@ const services = [
 
 
 const ServicesSection = () => {
-  useEffect(() => {
-  fetch(`${API_BASE}/api/analytics/track-visit`, { 
-    method: 'POST',
-    credentials: 'include' 
-  }).catch(console.error);
-}, []);
+//   useEffect(() => {
+//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
+//     method: 'POST',
+//     credentials: 'include' 
+//   }).catch(console.error);
+// }, []);
   return (
     <section className="sv-section">
       <div className="sv-header">
