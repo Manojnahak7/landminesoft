@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../Demo/GetDemo.css";
 
 // const API_BASE = "http://localhost:7689";
@@ -43,6 +43,12 @@ const GetDemo = () => {
         "Integrate AI assistants, recommendation engines and workflow automation into your products.",
     },
   ];
+useEffect(() => {
+  fetch(`${API_BASE}/api/analytics/track-visit`, { 
+    method: 'POST',
+    credentials: 'include' 
+  }).catch(console.error);
+}, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
