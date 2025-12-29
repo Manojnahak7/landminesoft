@@ -37,6 +37,13 @@ const AdminDashboard = () => {
 
   const [demoRequests, setDemoRequests] = useState([]);
   const [deletingDemoId, setDeletingDemoId] = useState(null);
+
+  // For views
+const [pageVisits, setPageVisits] = useState([]);
+const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // 1-12
+const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+const [deletingVisitId, setDeletingVisitId] = useState(null);
+
   const [jobForm, setJobForm] = useState({
     title: "",
     type: "",
@@ -90,6 +97,49 @@ const AdminDashboard = () => {
       console.error("Consultations error:", err);
     }
   };
+
+
+  // Page Visitors functions
+const fetchPageVisits = async (year, month) => {
+  try {
+    const res = await fetch(
+      `${APIBASE}/api/analytics/visits?year=${year}&month=${month}`
+    );
+    if (!res.ok) throw new Error("Failed to fetch visits");
+    const data = await res.json();
+    setPageVisits(data);
+  } catch (err) {
+    console.error("Visits error:", err);
+  }
+};
+
+const handleDeleteVisit = async (id) => {
+  if (!window.confirm("Delete this day's visit data?")) return;
+  setDeletingVisitId(id);
+  try {
+    const res = await fetch(`${APIBASE}/api/analytics/visits/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt || "Failed to delete");
+    }
+    setPageVisits(prev => prev.filter(v => v.id !== id));
+    alert("Visit record deleted!");
+  } catch (err) {
+    alert("Delete failed: " + err.message);
+  } finally {
+    setDeletingVisitId(null);
+  }
+};
+
+  
+useEffect(() => {
+  if (activeTab === "pagevisitors") {
+    fetchPageVisits(selectedYear, selectedMonth);
+  }
+}, [activeTab, selectedYear, selectedMonth]);
+
 
   const fetchDemoRequests = async () => {
     try {
@@ -587,6 +637,15 @@ const AdminDashboard = () => {
             Schedule Consultation
             <span className="count-badge">{consultations.length}</span>
           </button>
+
+          <button
+  className={`nav-btn ${activeTab === "pagevisitors" ? "active" : ""}`}
+  onClick={() => setActiveTab("pagevisitors")}
+>
+  Page Visitors
+  {pageVisits.length > 0 && <span className="count-badge">{pageVisits.length}</span>}
+</button>
+
         </nav>
 
         <button className="logout-btn" onClick={logout}>
@@ -1179,6 +1238,87 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+
+
+        {activeTab === "pagevisitors" && (
+  <div className="admin-content">
+    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+      <select
+        value={selectedMonth}
+        onChange={(e) => setSelectedMonth(Number(e.target.value))}
+        style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #d1d5db' }}
+      >
+        <option value={1}>January</option>
+        <option value={2}>February</option>
+        <option value={3}>March</option>
+        <option value={4}>April</option>
+        <option value={5}>May</option>
+        <option value={6}>June</option>
+        <option value={7}>July</option>
+        <option value={8}>August</option>
+        <option value={9}>September</option>
+        <option value={10}>October</option>
+        <option value={11}>November</option>
+        <option value={12}>December</option>
+      </select>
+      
+      <select
+        value={selectedYear}
+        onChange={(e) => setSelectedYear(Number(e.target.value))}
+        style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #d1d5db' }}
+      >
+        <option value={2024}>2024</option>
+        <option value={2025}>2025</option>
+        <option value={2026}>2026</option>
+      </select>
+    </div>
+
+    <div className="contacts-table-container">
+      {pageVisits.length === 0 ? (
+        <div className="empty-state">
+          <h3>No visits data</h3>
+          <p>Select a month to see daily visitor stats or wait for visits to start tracking.</p>
+        </div>
+      ) : (
+        <table className="contacts-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Visitors</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pageVisits.map((v) => (
+              <tr key={v.id}>
+                <td>{v.id}</td>
+                <td>{v.visitDate}</td>
+                <td style={{ fontWeight: 600, color: '#059669' }}>{v.count}</td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteVisit(v.id)}
+                    disabled={deletingVisitId === v.id}
+                  >
+                    {deletingVisitId === v.id ? "Deleting..." : "Delete"}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+
+    {pageVisits.length > 0 && (
+      <div style={{ marginTop: '1rem', padding: '1rem', background: '#f3f4f6', borderRadius: '8px', fontWeight: 600 }}>
+        📊 Total visitors this month: {pageVisits.reduce((sum, v) => sum + (v.count || 0), 0)}
+      </div>
+    )}
+  </div>
+)}
+
 
         {/* Post Job Form */}
         {activeTab === "postjob" && (
