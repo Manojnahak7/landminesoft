@@ -28,15 +28,16 @@ const services = [
     desc: "We help you choose the right stack, design future‑proof architectures, and plan delivery roadmaps for your AI and software initiatives.",
   },
 ];
-useEffect(() => {
+
+
+
+const ServicesSection = () => {
+  useEffect(() => {
   fetch(`${API_BASE}/api/analytics/track-visit`, { 
     method: 'POST',
     credentials: 'include' 
   }).catch(console.error);
 }, []);
-
-
-const ServicesSection = () => {
   return (
     <section className="sv-section">
       <div className="sv-header">
