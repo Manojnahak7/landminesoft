@@ -2,6 +2,7 @@
 import React,{useState,useEffect} from "react";
 import "../Whylandmine/WhyLandmineSoft.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const reasons = [
   {
     title: "Experienced engineering team",
