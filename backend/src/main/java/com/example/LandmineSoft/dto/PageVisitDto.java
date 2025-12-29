@@ -1,10 +1,10 @@
 package com.example.LandmineSoft.dto;
 
-import java.time.LocalDate;
+import com.example.LandmineSoft.entity.PageVisit;
 
 public class PageVisitDto {
     public Long id;
-    public String visitDate; // "2025-12-30" format
+    public String visitDate;
     public Integer count;
 
     public static PageVisitDto fromEntity(PageVisit entity) {
