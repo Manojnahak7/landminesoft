@@ -80,13 +80,13 @@ const CareersSection = () => {
   }, []);
 
 
-  useEffect(() => {
-  // Track page visit
-  fetch(`${API_BASE}/api/analytics/track-visit`, { 
-    method: 'POST',
-    credentials: 'include' 
-  }).catch(console.error);
-}, []);
+//   useEffect(() => {
+//   // Track page visit
+//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
+//     method: 'POST',
+//     credentials: 'include' 
+//   }).catch(console.error);
+// }, []);
 
   const fetchJobs = async () => {
     try {
