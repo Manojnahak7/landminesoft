@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Services/ServicesSection.css";
 
 const services = [
@@ -27,6 +28,13 @@ const services = [
     desc: "We help you choose the right stack, design future‑proof architectures, and plan delivery roadmaps for your AI and software initiatives.",
   },
 ];
+useEffect(() => {
+  fetch(`${API_BASE}/api/analytics/track-visit`, { 
+    method: 'POST',
+    credentials: 'include' 
+  }).catch(console.error);
+}, []);
+
 
 const ServicesSection = () => {
   return (
