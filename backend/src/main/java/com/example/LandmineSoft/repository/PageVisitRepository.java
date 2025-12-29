@@ -1,5 +1,5 @@
 package com.example.LandmineSoft.repository;
-import com.yourcompany.entity.PageVisit;
+import com.example.LandmineSoft.entity.PageVisit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.List;
