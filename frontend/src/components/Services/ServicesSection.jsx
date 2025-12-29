@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../Services/ServicesSection.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL; 
 const services = [
   {
     title: "Agentic AI, RAG & LLM Solutions",
