@@ -183,6 +183,8 @@ export const AppContent = () => {
     const API_BASE = import.meta.env.VITE_API_BASE_URL;
     
     const trackVisit = () => {
+        if (window.location.pathname === '/admin') return;
+
       fetch(`${API_BASE}/api/analytics/track-visit`, { 
         method: 'POST',
         credentials: 'include' 
