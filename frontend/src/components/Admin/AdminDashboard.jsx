@@ -103,7 +103,7 @@ const [deletingVisitId, setDeletingVisitId] = useState(null);
 const fetchPageVisits = async (year, month) => {
   try {
     const res = await fetch(
-      `${APIBASE}/api/analytics/visits?year=${year}&month=${month}`
+      `${API_BASE}/api/analytics/visits?year=${year}&month=${month}`
     );
     if (!res.ok) throw new Error("Failed to fetch visits");
     const data = await res.json();
@@ -117,7 +117,7 @@ const handleDeleteVisit = async (id) => {
   if (!window.confirm("Delete this day's visit data?")) return;
   setDeletingVisitId(id);
   try {
-    const res = await fetch(`${APIBASE}/api/analytics/visits/${id}`, {
+    const res = await fetch(`${API_BASE}/api/analytics/visits/${id}`, {
       method: "DELETE",
     });
     if (!res.ok) {
