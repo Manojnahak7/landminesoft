@@ -267,8 +267,7 @@
 
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Footer from "./components/Footer/Footer";
 import Hero from "./components/Hero/Hero";
@@ -289,7 +288,7 @@ import ScheduleFreeConsultation from "./components/Schedule/ScheduleFreeConsulta
 import ViewProject from "./components/Viewproject/ViewProject";
 
 // 👈 LOADING SPINNER
-export const LoadingSpinner = () => (
+const LoadingSpinner = () => (
   <div
     style={{
       display: "flex",
@@ -304,55 +303,24 @@ export const LoadingSpinner = () => (
   </div>
 );
 
-// 👈 IMPROVED PROTECTED ROUTE (Saves intended location)
-export const ProtectedRoute = ({ children }) => {
+// 👈 SIMPLIFIED PROTECTED ROUTE (NO useLocation - AuthPage handle karega)
+const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const location = useLocation(); // 🔥 Previous location save karne ke liye
 
   if (loading) return <LoadingSpinner />;
-  
-  // 🔥 Not logged in? Auth pe redirect + location save kar
-  if (!user) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
-  }
-
-  return children;
+  return user ? children : <Navigate to="/auth" replace />;
 };
 
-// 👈 ADMIN PROTECTED ROUTE
-export const AdminProtectedRoute = ({ children }) => {
+// 👈 ADMIN PROTECTED ROUTE (NO useLocation)
+const AdminProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const location = useLocation();
 
   if (loading) return <LoadingSpinner />;
-  
-  if (!user) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
-  }
-
-  return user.role === "ADMIN" ? children : <Navigate to="/" replace />;
+  return user?.role === "ADMIN" ? children : <Navigate to="/" replace />;
 };
 
-// 👈 HostBasedRedirect (unchanged)
-const HostBasedRedirect = () => {
-  const location = useLocation();
-  const navigate = useNavigate(); 
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    if (!checked && window.location.host === "careers.landminesoft.com") {
-      if (location.pathname === "/") {
-        navigate("/careers", { replace: true });
-      }
-      setChecked(true);
-    }
-  }, [checked, location.pathname, navigate]);
-
-  return null;
-};
-
-// 👈 PAGE COMPONENTS (unchanged)
-export const HomePage = () => (
+// 👈 PAGE COMPONENTS
+const HomePage = () => (
   <>
     <TopNav />
     <Nav />
@@ -364,7 +332,7 @@ export const HomePage = () => (
   </>
 );
 
-export const CareersPage = () => (
+const CareersPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -373,7 +341,7 @@ export const CareersPage = () => (
   </>
 );
 
-export const AboutPage = () => (
+const AboutPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -382,7 +350,7 @@ export const AboutPage = () => (
   </>
 );
 
-export const ContactPage = () => (
+const ContactPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -391,7 +359,7 @@ export const ContactPage = () => (
   </>
 );
 
-export const SupportPage = () => (
+const SupportPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -400,7 +368,7 @@ export const SupportPage = () => (
   </>
 );
 
-export const ProfileRoute = () => (
+const ProfileRoute = () => (
   <>
     <TopNav />
     <Nav />
@@ -409,7 +377,7 @@ export const ProfileRoute = () => (
   </>
 );
 
-export const DemoPage = () => (
+const DemoPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -418,7 +386,7 @@ export const DemoPage = () => (
   </>
 );
 
-export const ServicesPage = () => (
+const ServicesPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -427,7 +395,7 @@ export const ServicesPage = () => (
   </>
 );
 
-export const SchedulePage = () => (
+const SchedulePage = () => (
   <>
     <TopNav />
     <Nav />
@@ -436,7 +404,7 @@ export const SchedulePage = () => (
   </>
 );
 
-export const ViewPage = () => (
+const ViewPage = () => (
   <>
     <TopNav />
     <Nav />
@@ -445,13 +413,12 @@ export const ViewPage = () => (
   </>
 );
 
-// 👈 MAIN APP CONTENT
-export const AppContent = () => {
+// 👈 MAIN APP - PERFECT STRUCTURE
+const AppContent = () => {
   return (
-    <BrowserRouter>
-      <HostBasedRedirect />
+    <BrowserRouter basename="/">
       <Routes>
-        {/* 👈 PUBLIC ROUTES */}
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<HomePage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -462,16 +429,60 @@ export const AppContent = () => {
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/view" element={<ViewPage />} />
 
-        {/* 👈 AUTH ROUTES */}
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/auth/reset-password" element={<AuthPage />} />
-        <Route path="/auth/forgot-password" element={<AuthPage />} />
+        {/* AUTH ROUTES */}
+        <Route 
+          path="/auth" 
+          element={
+            <>
+              <TopNav />
+              <Nav />
+              <AuthPage />
+              <Footer />
+            </>
+          } 
+        />
+        <Route 
+          path="/auth/reset-password" 
+          element={
+            <>
+              <TopNav />
+              <Nav />
+              <AuthPage />
+              <Footer />
+            </>
+          } 
+        />
+        <Route 
+          path="/auth/forgot-password" 
+          element={
+            <>
+              <TopNav />
+              <Nav />
+              <AuthPage />
+              <Footer />
+            </>
+          } 
+        />
 
-        {/* 👈 PROTECTED ROUTES */}
-        <Route path="/profile" element={<ProtectedRoute><ProfileRoute /></ProtectedRoute>} />
-        <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+        {/* PROTECTED ROUTES */}
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <ProfileRoute />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          } 
+        />
 
-        {/* 👈 CATCH ALL */}
+        {/* CATCH ALL */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
@@ -479,7 +490,7 @@ export const AppContent = () => {
 };
 
 // 👈 ROOT APP
-export const App = () => {
+const App = () => {
   return (
     <AuthProvider>
       <AppContent />
@@ -488,4 +499,3 @@ export const App = () => {
 };
 
 export default App;
-
