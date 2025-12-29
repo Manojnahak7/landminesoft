@@ -1,7 +1,7 @@
 package com.example.LandmineSoft.controller;
-import com.yourcompany.dto.PageVisitDto;
-import com.yourcompany.entity.PageVisit;
-import com.yourcompany.repository.PageVisitRepository;
+package com.example.LandmineSoft.dto.PageVisitDto;
+import com.example.LandmineSoft.entity.PageVisit;
+import com.example.LandmineSoft.repository.PageVisitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
