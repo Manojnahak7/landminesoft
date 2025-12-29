@@ -43,12 +43,12 @@ const GetDemo = () => {
         "Integrate AI assistants, recommendation engines and workflow automation into your products.",
     },
   ];
-useEffect(() => {
-  fetch(`${API_BASE}/api/analytics/track-visit`, { 
-    method: 'POST',
-    credentials: 'include' 
-  }).catch(console.error);
-}, []);
+// useEffect(() => {
+//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
+//     method: 'POST',
+//     credentials: 'include' 
+//   }).catch(console.error);
+// }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
