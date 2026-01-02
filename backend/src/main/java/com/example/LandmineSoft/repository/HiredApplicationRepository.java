@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HiredApplicationRepository extends JpaRepository<HiredApplication, Long> {
+  List<HiredApplication> findByEmail(String email);
 }
