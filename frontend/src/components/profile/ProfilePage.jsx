@@ -72,7 +72,9 @@ const ProfilePage = () => {
 const fetchHiredApps = async () => {
   if (!user) return;
   try {
-    const res = await fetch(`${API_BASE}/api/auth/applications/user/${user.id}`);
+    // const res = await fetch(`${API_BASE}/api/auth/applications/user/${user.id}`);
+    const res = await fetch(`${API_BASE}/api/auth/applications/user/${user.id}/hired`);
+
     if (res.ok) {
       const allData = await res.json();
       // HIRED filter kar (case insensitive)
