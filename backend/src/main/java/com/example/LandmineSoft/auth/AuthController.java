@@ -545,8 +545,8 @@ public ResponseEntity<List<JobApplication>> getUserHiredApplications(@PathVariab
       app.setJobTitle(ha.getJobTitle());
       app.setStatus("HIRED");
       app.setFullName(ha.getFullName());
-      app.setAppliedAt(ha.getHiredDate().toString());
-      return app;
+app.setAppliedAt(ha.getHiredDate());
+        return app;
     }).collect(Collectors.toList());
     return ResponseEntity.ok(mapped);
   } catch (Exception e) {
