@@ -534,4 +534,16 @@ public ResponseEntity<List<HiredApplication>> getHiredApplications() {
 }
 
 
+    @GetMapping("/applications/user/{userId}/hired")
+public ResponseEntity<List<JobApplication>> getUserHiredApplications(@PathVariable Long userId) {
+  try {
+    List<JobApplication> hiredApps = jobApplicationRepository.findUserHiredApplications(userId);
+    return ResponseEntity.ok(hiredApps);
+  } catch (Exception e) {
+    return ResponseEntity.status(500).body(Collections.emptyList());
+  }
+}
+
+
+
 }
