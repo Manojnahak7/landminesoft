@@ -389,13 +389,17 @@ public ResponseEntity<?> updateApplicationStatus(
             jobApplicationRepository.delete(app);
             return ResponseEntity.ok(Map.of("success", true, "message", "✅ HIRED! Moved to Hired table."));
         } 
-        else if ("NO_RESPONSE".equals(newStatus) || "REJECTED".equals(newStatus)) {  // 🔥 REJECTED ADD!
-            jobApplicationRepository.delete(app);
-            return ResponseEntity.ok(Map.of(
-                "success", true, 
-                "message", "📭 " + newStatus + " - Record deleted!"
-            ));
-        } 
+       else if ("NO_RESPONSE".equals(newStatus)) {
+    jobApplicationRepository.delete(app);
+} 
+else if ("REJECTED".equals(newStatus)) {
+    app.setStatus("REJECTED");
+    jobApplicationRepository.save(app);
+    return ResponseEntity.ok(Map.of(
+        "success", true, 
+        "message", "✅ REJECTED - Record retained!"
+    ));
+}
         // 🔥 KEEP ONLY: PENDING, IN_PROGRESS, SHORTLISTED
         else {
             app.setStatus(newStatus);
