@@ -44,6 +44,12 @@ const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); /
 const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 const [deletingVisitId, setDeletingVisitId] = useState(null);
 
+
+
+
+  // For Hired
+  const [hiredApps, setHiredApps] = useState([]);
+
   const [jobForm, setJobForm] = useState({
     title: "",
     type: "",
@@ -60,6 +66,7 @@ const [deletingVisitId, setDeletingVisitId] = useState(null);
       Promise.all([
         fetchUsers(),
         fetchApplications(),
+        fetchHiredApps(), // for hire
         fetchJobs(),
         fetchContacts(),
         fetchTickets(), // NEW
@@ -507,6 +514,22 @@ const statusOptions = ['PENDING', 'IN_PROGRESS', 'SHORTLISTED', 'REJECTED', 'HIR
     }
   };
 
+
+  // for hired application fetch
+  // 🔥 NEW - Hired applications fetch
+const fetchHiredApps = async () => {
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/admin/applications/hired`);
+    if (res.ok) {
+      const data = await res.json();
+      setHiredApps(data);
+    }
+  } catch (err) {
+    console.error('Hired fetch error:', err);
+  }
+};
+
+
   const handlePostJob = async (e) => {
     e.preventDefault();
     setPostingJob(true);
@@ -594,6 +617,12 @@ const statusOptions = ['PENDING', 'IN_PROGRESS', 'SHORTLISTED', 'REJECTED', 'HIR
           >
             📋 View All Applications ({applications.length})
           </button>
+
+          <button className={`nav-btn ${activeTab === 'hired' ? 'active' : ''}`} 
+        onClick={() => setActiveTab('hired')}>
+  🎉 Hired ({hiredApps.length})
+</button>
+
 
           <button
             className={`nav-btn ${activeTab === "managejobs" ? "active" : ""}`}
@@ -859,6 +888,46 @@ const statusOptions = ['PENDING', 'IN_PROGRESS', 'SHORTLISTED', 'REJECTED', 'HIR
             </div>
           </div>
         )}
+
+
+{/* Hired application */}
+        {activeTab === 'hired' && (
+  <div className="admin-content">
+    <div className="applications-table-container">
+      <h3>🎉 Hired Candidates ({hiredApps.length})</h3>
+      {hiredApps.length === 0 ? (
+        <div className="empty-state">
+          <h4>No hired candidates yet 🎯</h4>
+          <p>Move Pending applications to "HIRED" status to see them here!</p>
+        </div>
+      ) : (
+        <table className="applications-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Candidate</th><th>Email</th><th>Job</th><th>CGPA</th>
+              <th>Salary</th><th>Hired Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hiredApps.map(app => (
+              <tr key={app.id}>
+                <td>{app.originalAppId || app.id}</td>
+                <td><strong>{app.fullName}</strong></td>
+                <td>{app.email}</td>
+                <td>{app.jobTitle}</td>
+                <td>{app.cgpa}</td>
+                <td>{app.expectedSalary}</td>
+                <td>{new Date(app.hiredDate).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </div>
+)}
+
+        
         {/* Users Tab */}
         {activeTab === "users" && (
           <div className="admin-content">
