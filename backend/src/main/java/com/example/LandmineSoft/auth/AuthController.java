@@ -410,7 +410,7 @@ public ResponseEntity<?> updateApplicationStatus(
     }
 }
 
-}
+
 
 
     @DeleteMapping("/admin/jobs/{jobId}")
