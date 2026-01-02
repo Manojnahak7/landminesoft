@@ -904,7 +904,7 @@ const fetchHiredApps = async () => {
         <table className="applications-table">
           <thead>
             <tr>
-              <th>ID</th><th>Candidate</th><th>Email</th><th>Job</th><th>CGPA</th>
+              <th>Original App ID</th><th>Candidate</th><th>Email</th><th>Job</th><th>CGPA</th>
               <th>Salary</th><th>Hired Date</th>
             </tr>
           </thead>
