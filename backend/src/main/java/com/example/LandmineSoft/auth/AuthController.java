@@ -27,6 +27,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.LandmineSoft.repository.HiredApplicationRepository;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,10 +51,13 @@ public class AuthController {
     private JobApplicationService jobApplicationService;
     private final ResumeService resumeService;
 
+    private HiredApplicationRepository hiredApplicationRepository;
+
+
     @Autowired
     public AuthController(AuthService authService, UserRepository userRepository,
                           JobRepository jobRepository, JobApplicationRepository jobApplicationRepository,
-                          EmailService emailService,JobApplicationService jobApplicationService,ResumeService resumeService) { // 🔥 EMAIL ADDED
+                          EmailService emailService,JobApplicationService jobApplicationService,ResumeService resumeService,HiredApplicationRepository hiredApplicationRepository) { // 🔥 EMAIL ADDED
         this.authService = authService;
         this.userRepository = userRepository;
         this.jobRepository = jobRepository;
@@ -60,6 +65,7 @@ public class AuthController {
         this.emailService = emailService; // 🔥 INITIALIZE
         this.jobApplicationService=jobApplicationService;
         this.resumeService=resumeService;
+        this.hiredApplicationRepository = hiredApplicationRepository;
     }
 
     // ✅ REGISTER - WORKING!
@@ -329,32 +335,74 @@ public class AuthController {
         }
     }
 
+    // @PutMapping("/admin/applications/{applicationId}/status")
+    // public ResponseEntity<?> updateApplicationStatus(
+    //         @PathVariable Long applicationId,
+    //         @RequestBody Map<String, String> statusRequest) {
+    //     try {
+    //         String newStatus = statusRequest.get("status");
+    //         if (newStatus == null || !Arrays.asList("PENDING", "IN_PROGRESS", "REJECTED", "SHORTLISTED").contains(newStatus)) {
+    //             return ResponseEntity.badRequest()
+    //                     .body(Map.of("error", "Invalid status. Use PENDING, IN_PROGRESS, REJECTED, SHORTLISTED"));
+    //         }
+
+    //         // ✅ JOBAPPLICATIONSERVICE USE KAR (email logic chalega)
+    //         JobApplication application = jobApplicationService.updateStatus(applicationId, newStatus);
+
+    //         return ResponseEntity.ok(Map.of(
+    //                 "message", "Status updated successfully",
+    //                 "applicationId", applicationId,
+    //                 "newStatus", newStatus,
+    //                 "success", true
+    //         ));
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.internalServerError()
+    //                 .body(Map.of("error", "Failed to update status: " + e.getMessage()));
+    //     }
+    // }
+
     @PutMapping("/admin/applications/{applicationId}/status")
-    public ResponseEntity<?> updateApplicationStatus(
-            @PathVariable Long applicationId,
-            @RequestBody Map<String, String> statusRequest) {
-        try {
-            String newStatus = statusRequest.get("status");
-            if (newStatus == null || !Arrays.asList("PENDING", "IN_PROGRESS", "REJECTED", "SHORTLISTED").contains(newStatus)) {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Invalid status. Use PENDING, IN_PROGRESS, REJECTED, SHORTLISTED"));
-            }
+public ResponseEntity<?> updateApplicationStatus(
+        @PathVariable Long applicationId,
+        @RequestBody Map<String, String> statusRequest) {
+    try {
+        String newStatus = statusRequest.get("status");
+        JobApplication app = jobApplicationRepository.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
 
-            // ✅ JOBAPPLICATIONSERVICE USE KAR (email logic chalega)
-            JobApplication application = jobApplicationService.updateStatus(applicationId, newStatus);
-
-            return ResponseEntity.ok(Map.of(
-                    "message", "Status updated successfully",
-                    "applicationId", applicationId,
-                    "newStatus", newStatus,
-                    "success", true
-            ));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("error", "Failed to update status: " + e.getMessage()));
+        if ("HIRED".equalsIgnoreCase(newStatus)) {
+            // 🔥 Create Hired record & DELETE from job_applications
+            HiredApplication hired = new HiredApplication();
+            hired.setOriginalAppId(app.getId());
+            hired.setFullName(app.getFullName());
+            hired.setEmail(app.getEmail());
+            hired.setPhone(app.getPhone());
+            hired.setCgpa(app.getCgpa());
+            hired.setJobTitle(app.getJobTitle());
+            hired.setExpectedSalary(app.getExpectedSalary());
+            hired.setHiredDate(LocalDateTime.now());
+            hiredApplicationRepository.save(hired);
+            
+            jobApplicationRepository.delete(app); // Remove from main table
+            // emailService.sendHiredEmail(app.getFullName(), app.getEmail(), app.getJobTitle()); // Add if email service hai
+            
+            return ResponseEntity.ok(Map.of("success", true, "message", "✅ HIRED! Moved to Hired table."));
+        } else if ("NO_RESPONSE".equalsIgnoreCase(newStatus)) {
+            // 🔥 Direct DELETE from job_applications
+            jobApplicationRepository.delete(app);
+            return ResponseEntity.ok(Map.of("success", true, "message", "📭 No Response - Record deleted!"));
+        } else {
+            // Normal update (PENDING, IN_PROGRESS, REJECTED)
+            app.setStatus(newStatus.toUpperCase());
+            jobApplicationRepository.save(app);
+            return ResponseEntity.ok(Map.of("success", true, "newStatus", newStatus));
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
+}
 
 
     @DeleteMapping("/admin/jobs/{jobId}")
@@ -476,5 +524,11 @@ public class AuthController {
             ));
         }
     }
+
+    @GetMapping("/admin/applications/hired")
+public ResponseEntity<List<HiredApplication>> getHiredApplications() {
+    return ResponseEntity.ok(hiredApplicationRepository.findAll());
+}
+
 
 }
