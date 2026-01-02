@@ -292,13 +292,13 @@ const inactiveApps = applications.filter(app =>
 
             {/* table area */}
             <div className="applications-card-wrapper">
-              /* {loadingApps ? (
-                <div className="loading-state">Loading applications...</div>
-              ) : activeInnerTab === "active" ? (
-                renderAppsTable(activeApps)
-              ) : (
-                renderAppsTable(inactiveApps)
-              )} */
+              // {loadingApps ? (
+             //   <div className="loading-state">Loading applications...</div>
+              //) : activeInnerTab === "active" ? (
+               // renderAppsTable(activeApps)
+              //) : (
+               // renderAppsTable(inactiveApps)
+              //)} 
               {loadingApps ? (
   <div className="loading-state">Loading...</div>
 ) : activeInnerTab === 'active' ? (
