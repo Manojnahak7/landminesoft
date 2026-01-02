@@ -534,15 +534,26 @@ public ResponseEntity<List<HiredApplication>> getHiredApplications() {
 }
 
 
-    @GetMapping("/applications/user/{userId}/hired")
+   @GetMapping("/applications/user/{userId}/hired")
 public ResponseEntity<List<JobApplication>> getUserHiredApplications(@PathVariable Long userId) {
   try {
-    List<JobApplication> hiredApps = jobApplicationRepository.findUserHiredApplications(userId);
-    return ResponseEntity.ok(hiredApps);
+    User user = userRepository.findById(userId).orElseThrow();
+    List<HiredApplication> hired = hiredApplicationRepository.findByEmail(user.getEmail());
+    List<JobApplication> mapped = hired.stream().map(ha -> {
+      JobApplication app = new JobApplication();
+      app.setId(ha.getOriginalAppId());
+      app.setJobTitle(ha.getJobTitle());
+      app.setStatus("HIRED");
+      app.setFullName(ha.getFullName());
+      app.setAppliedAt(ha.getHiredDate().toString());
+      return app;
+    }).collect(Collectors.toList());
+    return ResponseEntity.ok(mapped);
   } catch (Exception e) {
     return ResponseEntity.status(500).body(Collections.emptyList());
   }
 }
+
 
 
 
