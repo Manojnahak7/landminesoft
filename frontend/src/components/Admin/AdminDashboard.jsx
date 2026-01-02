@@ -452,6 +452,11 @@ useEffect(() => {
 
   // };
 
+
+  // 🔥 NEW - Status options with HIRED & NO_RESPONSE
+const statusOptions = ['PENDING', 'IN_PROGRESS', 'SHORTLISTED', 'REJECTED', 'HIRED', 'NO_RESPONSE'];
+
+
   const handleStatusUpdate = async (id, newStatus) => {
     if (newStatus === "REJECTED") {
       if (
@@ -1012,7 +1017,7 @@ useEffect(() => {
                                 📥 Resume
                               </a>
 
-                              <select
+                              {/* <select
                                 className="status-select"
                                 value={app.status}
                                 onChange={(e) =>
@@ -1025,7 +1030,16 @@ useEffect(() => {
                                   🔄 In Progress
                                 </option>
                                 <option value="REJECTED">❌ Rejected</option>
-                              </select>
+                              </select> */}
+                              <select className="status-select" value={app.status} onChange={(e) => handleStatusUpdate(app.id, e.target.value)} disabled={updatingStatus === app.id}>
+  <option value="PENDING">Pending ⏳</option>
+  <option value="IN_PROGRESS">In Progress 🔄</option>
+  <option value="SHORTLISTED">Shortlisted ⭐</option>
+  <option value="REJECTED">Rejected ❌</option>
+  <option value="HIRED">Hired 🎉</option>  {/* 🔥 NEW */}
+  <option value="NO_RESPONSE">No Response 📭</option>  {/* 🔥 NEW */}
+</select>
+
                             </div>
                           </td>
                         </tr>
