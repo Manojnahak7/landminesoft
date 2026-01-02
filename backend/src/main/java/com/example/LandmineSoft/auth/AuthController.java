@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.LandmineSoft.repository.HiredApplicationRepository;
+import com.example.LandmineSoft.entity.HiredApplication;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
