@@ -365,17 +365,17 @@ public class AuthController {
     //     }
     // }
 
-    @PutMapping("/admin/applications/{applicationId}/status")
+   @PutMapping("/admin/applications/{applicationId}/status")
 public ResponseEntity<?> updateApplicationStatus(
         @PathVariable Long applicationId,
         @RequestBody Map<String, String> statusRequest) {
     try {
-        String newStatus = statusRequest.get("status");
+        String newStatus = statusRequest.get("status").toUpperCase();  // ✅ UPPERCASE
         JobApplication app = jobApplicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        if ("HIRED".equalsIgnoreCase(newStatus)) {
-            // 🔥 Create Hired record & DELETE from job_applications
+        // 🔥 DELETE ONLY FOR HIRED/NO_RESPONSE
+        if ("HIRED".equals(newStatus)) {
             HiredApplication hired = new HiredApplication();
             hired.setOriginalAppId(app.getId());
             hired.setFullName(app.getFullName());
@@ -386,25 +386,30 @@ public ResponseEntity<?> updateApplicationStatus(
             hired.setExpectedSalary(app.getExpectedSalary());
             hired.setHiredDate(LocalDateTime.now());
             hiredApplicationRepository.save(hired);
-            
-            jobApplicationRepository.delete(app); // Remove from main table
-            // emailService.sendHiredEmail(app.getFullName(), app.getEmail(), app.getJobTitle()); // Add if email service hai
-            
+            jobApplicationRepository.delete(app);
             return ResponseEntity.ok(Map.of("success", true, "message", "✅ HIRED! Moved to Hired table."));
-        } else if ("NO_RESPONSE".equalsIgnoreCase(newStatus)) {
-            // 🔥 Direct DELETE from job_applications
+        } 
+        else if ("NO_RESPONSE".equals(newStatus)) {
             jobApplicationRepository.delete(app);
             return ResponseEntity.ok(Map.of("success", true, "message", "📭 No Response - Record deleted!"));
-        } else {
-            // Normal update (PENDING, IN_PROGRESS, REJECTED)
-            app.setStatus(newStatus.toUpperCase());
+        } 
+        // 🔥 ALL OTHER STATUSES - KEEP IN MAIN TABLE
+        else {
+            // PENDING, IN_PROGRESS, SHORTLISTED, REJECTED ✅ ALL STAY
+            app.setStatus(newStatus);
             jobApplicationRepository.save(app);
-            return ResponseEntity.ok(Map.of("success", true, "newStatus", newStatus));
+            return ResponseEntity.ok(Map.of(
+                "success", true, 
+                "newStatus", newStatus,
+                "message", "✅ Status updated to " + newStatus
+            ));
         }
     } catch (Exception e) {
         e.printStackTrace();
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
+}
+
 }
 
 
