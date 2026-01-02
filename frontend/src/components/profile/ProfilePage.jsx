@@ -17,6 +17,10 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // For hire
+  const [hiredApps, setHiredApps] = useState([]);  // 🔥 NEW
+
+
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -37,9 +41,13 @@ const ProfilePage = () => {
   useEffect(() => {
     if (user) {
       fetchApplications();
+      fetchHiredApps(); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+
+  
 
   const fetchApplications = async () => {
     if (!user) return;
@@ -58,6 +66,23 @@ const ProfilePage = () => {
       setLoadingApps(false);
     }
   };
+
+
+  // 🔥 NEW - Fetch user hired applications
+const fetchHiredApps = async () => {
+  if (!user) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/applications/user/${user.id}`);
+    if (res.ok) {
+      const data = await res.json();
+      const userHired = data.filter(app => app.status === 'HIRED');
+      setHiredApps(userHired);
+    }
+  } catch (err) {
+    console.error("Hired apps error:", err);
+  }
+};
+
 
   // Sync form with user data
   useEffect(() => {
@@ -139,17 +164,28 @@ const ProfilePage = () => {
   };
 
   // ---- FILTERED APPLICATION LISTS ----
-  const activeApps = applications.filter(
-    (app) =>
-      app.status === "PENDING" ||
-      app.status === "IN_PROGRESS" ||
-      app.status === "pending" ||
-      app.status === "inprogress"
-  );
+  // const activeApps = applications.filter(
+  //   (app) =>
+  //     app.status === "PENDING" ||
+  //     app.status === "IN_PROGRESS" ||
+  //     app.status === "pending" ||
+  //     app.status === "inprogress"
+  // );
 
-  const inactiveApps = applications.filter(
-    (app) => app.status === "REJECTED" || app.status === "rejected"
-  );
+  // const inactiveApps = applications.filter(
+  //   (app) => app.status === "REJECTED" || app.status === "rejected"
+  // );
+
+  // Active apps (PENDING, IN_PROGRESS, SHORTLISTED)
+const activeApps = applications.filter(app =>
+  ['PENDING', 'IN_PROGRESS', 'SHORTLISTED'].includes(app.status?.toUpperCase())
+);
+
+// Inactive (REJECTED, NO_RESPONSE)
+const inactiveApps = applications.filter(app =>
+  ['REJECTED', 'NO_RESPONSE'].includes(app.status?.toUpperCase())
+);
+
 
   const renderAppsTable = (apps) => {
     if (apps.length === 0) {
@@ -240,6 +276,10 @@ const ProfilePage = () => {
               >
                 Inactive ({inactiveApps.length})
               </button>
+              <button className={`app-inner-tab ${activeInnerTab === 'hired' ? 'active' : ''}`}
+          onClick={() => setActiveInnerTab('hired')}>
+    Hired 🎉 ({hiredApps.length})
+  </button>
 
               <button
                 className="refresh-btn"
@@ -252,13 +292,25 @@ const ProfilePage = () => {
 
             {/* table area */}
             <div className="applications-card-wrapper">
-              {loadingApps ? (
+              /* {loadingApps ? (
                 <div className="loading-state">Loading applications...</div>
               ) : activeInnerTab === "active" ? (
                 renderAppsTable(activeApps)
               ) : (
                 renderAppsTable(inactiveApps)
-              )}
+              )} */
+              {loadingApps ? (
+  <div className="loading-state">Loading...</div>
+) : activeInnerTab === 'active' ? (
+  renderAppsTable(activeApps)
+) : activeInnerTab === 'inactive' ? (
+  renderAppsTable(inactiveApps)
+) : activeInnerTab === 'hired' ? (  // 🔥 NEW
+  renderAppsTable(hiredApps)
+) : (
+  renderAppsTable([])
+)}
+
             </div>
           </div>
         )}
