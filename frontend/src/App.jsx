@@ -179,39 +179,66 @@ export const ViewPage = () => (
 
 // 👈 MAIN APP CONTENT - NAMED EXPORT
 export const AppContent = () => {
-   React.useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+  //  React.useEffect(() => {
+  //   const API_BASE = import.meta.env.VITE_API_BASE_URL;
     
-    const trackVisit = () => {
-        if (window.location.pathname === '/admin') return;
+  //   const trackVisit = () => {
+  //       if (window.location.pathname === '/admin') return;
 
-      fetch(`${API_BASE}/api/analytics/track-visit`, { 
-        method: 'POST',
-        credentials: 'include' 
-      }).catch(console.error);
-    };
+  //     fetch(`${API_BASE}/api/analytics/track-visit`, { 
+  //       method: 'POST',
+  //       credentials: 'include' 
+  //     }).catch(console.error);
+  //   };
     
-    // Initial load
-    trackVisit();
+  //   // Initial load
+  //   trackVisit();
     
-    // Track when page becomes visible (user returns)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        setTimeout(trackVisit, 1000); // 1 sec debounce
-      }
-    };
+  //   // Track when page becomes visible (user returns)
+  //   const handleVisibilityChange = () => {
+  //     if (!document.hidden) {
+  //       setTimeout(trackVisit, 1000); // 1 sec debounce
+  //     }
+  //   };
     
-    // Track browser back/forward
-    const handlePopState = () => trackVisit();
+  //   // Track browser back/forward
+  //   const handlePopState = () => trackVisit();
     
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('popstate', handlePopState);
+  //   document.addEventListener('visibilitychange', handleVisibilityChange);
+  //   window.addEventListener('popstate', handlePopState);
     
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
+  //     window.removeEventListener('popstate', handlePopState);
+  //   };
+  // }, []);
+  React.useEffect(() => {
+  if (window.location.pathname.startsWith('/admin')) return;
+  
+  let callCount = 0;
+  const MAX_CALLS = 1; // Only 1 call per session
+  const MIN_GAP = 5000; // 5 sec min gap
+  let lastCall = 0;
+  
+  const safeTrack = () => {
+    const now = Date.now();
+    if (callCount >= MAX_CALLS || now - lastCall < MIN_GAP) return;
+    
+    callCount++;
+    lastCall = now;
+    
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+    fetch(`${API_BASE}/api/analytics/track-visit`, { 
+      method: 'POST',
+      credentials: 'include' 
+    }).catch(e => console.log('Track failed:', e));
+  };
+  
+  // Only initial load 1 call
+  safeTrack();
+  
+}, []); // Empty deps = once per mount
+
   return (
     <BrowserRouter>
       <HostBasedRedirect />
