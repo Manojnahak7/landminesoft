@@ -229,22 +229,24 @@ useEffect(() => {
   // };
 
   
-  const fetchApplications = async () => {
+ const fetchApplications = async () => {
   try {
     const res = await fetch(`${API_BASE}/api/auth/admin/applications`);
     if (!res.ok) throw new Error("Failed to fetch applications");
     const allApps = await res.json();
     
-    // 🔥 Sirf PENDING + IN_PROGRESS
-    const filteredApps = allApps.filter(app => 
-      ['PENDING', 'IN_PROGRESS'].includes(app.status?.toUpperCase())
-    );
+    // 🔥 ACTIVE applications only: PENDING, IN_PROGRESS, SHORTLISTED
+    const activeApps = allApps.filter(app => {
+      const status = app.status?.toUpperCase();
+      return ['PENDING', 'IN_PROGRESS', 'SHORTLISTED'].includes(status);
+    });
     
-    setApplications(filteredApps);  // ✅ Ab length = 3
+    setApplications(activeApps);
   } catch (err) {
     console.error("Applications error:", err);
   }
 };
+
 
   const fetchJobs = async () => {
     try {
@@ -998,7 +1000,8 @@ const fetchHiredApps = async () => {
             <div className="applications-table-container">
               {applications.filter((app) => {
                 const s = (app.status || "").toUpperCase();
-                return s === "PENDING" || s === "IN_PROGRESS";
+                // return s === "PENDING" || s === "IN_PROGRESS";
+            return ["PENDING", "IN_PROGRESS", "SHORTLISTED"].includes(s);
               }).length === 0 ? (
                 <div className="empty-state">
                   <h3>📭 No pending applications</h3>
@@ -1026,7 +1029,8 @@ const fetchHiredApps = async () => {
                     {applications
                       .filter((app) => {
                         const s = (app.status || "").toUpperCase();
-                        return s === "PENDING" || s === "IN_PROGRESS";
+                        // return s === "PENDING" || s === "IN_PROGRESS";
+                         return ["PENDING", "IN_PROGRESS", "SHORTLISTED"].includes(s);
                       })
                       .map((app) => (
                         <tr key={app.id}>
