@@ -24,5 +24,9 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     // 🔥 Hired/No Response ke liye
 List<JobApplication> findByStatus(String status);
 List<JobApplication> findByStatusIn(List<String> statuses);
+    // 🔥 User ke HIRED apps (jo delete nahi hue)
+@Query("SELECT a FROM JobApplication a WHERE a.userId = :userId AND a.status = 'HIRED'")
+List<JobApplication> findUserHiredApplications(@Param("userId") Long userId);
+
 
 }
