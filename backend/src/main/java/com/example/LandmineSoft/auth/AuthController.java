@@ -374,7 +374,6 @@ public ResponseEntity<?> updateApplicationStatus(
         JobApplication app = jobApplicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        // 🔥 DELETE FOR: HIRED, NO_RESPONSE, REJECTED
         if ("HIRED".equals(newStatus)) {
             HiredApplication hired = new HiredApplication();
             hired.setOriginalAppId(app.getId());
@@ -388,35 +387,24 @@ public ResponseEntity<?> updateApplicationStatus(
             hiredApplicationRepository.save(hired);
             jobApplicationRepository.delete(app);
             return ResponseEntity.ok(Map.of("success", true, "message", "✅ HIRED! Moved to Hired table."));
-        } 
-       else if ("NO_RESPONSE".equals(newStatus)) {
-    jobApplicationRepository.delete(app);
-} 
-else if ("REJECTED".equals(newStatus)) {
-    app.setStatus("REJECTED");
-    jobApplicationRepository.save(app);
-    return ResponseEntity.ok(Map.of(
-        "success", true, 
-        "message", "✅ REJECTED - Record retained!"
-    ));
-}
-        // 🔥 KEEP ONLY: PENDING, IN_PROGRESS, SHORTLISTED
-        else {
+        } else if ("NO_RESPONSE".equals(newStatus)) {
+            jobApplicationRepository.delete(app);
+            return ResponseEntity.ok(Map.of("success", true, "message", "✅ NO_RESPONSE - Record deleted!"));
+        } else if ("REJECTED".equals(newStatus)) {
+            app.setStatus("REJECTED");
+            jobApplicationRepository.save(app);
+            return ResponseEntity.ok(Map.of("success", true, "message", "✅ REJECTED - Record retained!"));
+        } else {
+            // PENDING, IN_PROGRESS, SHORTLISTED
             app.setStatus(newStatus);
             jobApplicationRepository.save(app);
-            return ResponseEntity.ok(Map.of(
-                "success", true, 
-                "newStatus", newStatus,
-                "message", "✅ Status updated to " + newStatus
-            ));
+            return ResponseEntity.ok(Map.of("success", true, "newStatus", newStatus, "message", "✅ Status updated to " + newStatus));
         }
     } catch (Exception e) {
         e.printStackTrace();
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
 }
-
-
 
 
 
