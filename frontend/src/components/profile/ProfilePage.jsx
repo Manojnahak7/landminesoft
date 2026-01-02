@@ -68,20 +68,24 @@ const ProfilePage = () => {
   };
 
 
-  // 🔥 NEW - Fetch user hired applications
+  // For hired
 const fetchHiredApps = async () => {
   if (!user) return;
   try {
     const res = await fetch(`${API_BASE}/api/auth/applications/user/${user.id}`);
     if (res.ok) {
-      const data = await res.json();
-      const userHired = data.filter(app => app.status === 'HIRED');
+      const allData = await res.json();
+      // HIRED filter kar (case insensitive)
+      const userHired = allData.filter(app => 
+        app.status?.toUpperCase() === 'HIRED'
+      );
       setHiredApps(userHired);
     }
   } catch (err) {
     console.error("Hired apps error:", err);
   }
 };
+;
 
 
   // Sync form with user data
