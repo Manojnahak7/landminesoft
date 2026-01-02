@@ -16,11 +16,17 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     List<JobApplication> findByUserId(Long userId);
     boolean existsByUserIdAndJobId(Long userId, Long jobId);
 
-    // ✅ FIXED - NO companyName, simple fields only
+    // // ✅ FIXED - NO companyName, simple fields only
+    // @Query("SELECT a.id, a.userId, a.jobId, a.jobTitle, a.status, a.appliedAt " +
+    //         "FROM JobApplication a WHERE a.userId = :userId " +
+    //         "ORDER BY CASE WHEN a.status = 'PENDING' THEN 1 WHEN a.status = 'IN_PROGRESS' THEN 2 WHEN a.status = 'REJECTED' THEN 3 ELSE 4 END")
+    // List<Object[]> findUserApplicationsSafe(@Param("userId") Long userId);
+
     @Query("SELECT a.id, a.userId, a.jobId, a.jobTitle, a.status, a.appliedAt " +
-            "FROM JobApplication a WHERE a.userId = :userId " +
-            "ORDER BY CASE WHEN a.status = 'PENDING' THEN 1 WHEN a.status = 'IN_PROGRESS' THEN 2 WHEN a.status = 'REJECTED' THEN 3 ELSE 4 END")
-    List<Object[]> findUserApplicationsSafe(@Param("userId") Long userId);
+       "FROM JobApplication a WHERE a.userId = :userId " +
+       "ORDER BY a.appliedAt DESC")
+List<Object[]> findUserApplicationsSafe(@Param("userId") Long userId);
+
 
 
     // 🔥 Hired/No Response ke liye
