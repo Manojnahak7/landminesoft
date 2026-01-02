@@ -365,16 +365,16 @@ public class AuthController {
     //     }
     // }
 
-   @PutMapping("/admin/applications/{applicationId}/status")
+@PutMapping("/admin/applications/{applicationId}/status")
 public ResponseEntity<?> updateApplicationStatus(
         @PathVariable Long applicationId,
         @RequestBody Map<String, String> statusRequest) {
     try {
-        String newStatus = statusRequest.get("status").toUpperCase();  // ✅ UPPERCASE
+        String newStatus = statusRequest.get("status").toUpperCase();
         JobApplication app = jobApplicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        // 🔥 DELETE ONLY FOR HIRED/NO_RESPONSE
+        // 🔥 DELETE FOR: HIRED, NO_RESPONSE, REJECTED
         if ("HIRED".equals(newStatus)) {
             HiredApplication hired = new HiredApplication();
             hired.setOriginalAppId(app.getId());
@@ -389,13 +389,15 @@ public ResponseEntity<?> updateApplicationStatus(
             jobApplicationRepository.delete(app);
             return ResponseEntity.ok(Map.of("success", true, "message", "✅ HIRED! Moved to Hired table."));
         } 
-        else if ("NO_RESPONSE".equals(newStatus)) {
+        else if ("NO_RESPONSE".equals(newStatus) || "REJECTED".equals(newStatus)) {  // 🔥 REJECTED ADD!
             jobApplicationRepository.delete(app);
-            return ResponseEntity.ok(Map.of("success", true, "message", "📭 No Response - Record deleted!"));
+            return ResponseEntity.ok(Map.of(
+                "success", true, 
+                "message", "📭 " + newStatus + " - Record deleted!"
+            ));
         } 
-        // 🔥 ALL OTHER STATUSES - KEEP IN MAIN TABLE
+        // 🔥 KEEP ONLY: PENDING, IN_PROGRESS, SHORTLISTED
         else {
-            // PENDING, IN_PROGRESS, SHORTLISTED, REJECTED ✅ ALL STAY
             app.setStatus(newStatus);
             jobApplicationRepository.save(app);
             return ResponseEntity.ok(Map.of(
@@ -409,6 +411,7 @@ public ResponseEntity<?> updateApplicationStatus(
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
 }
+
 
 
 
