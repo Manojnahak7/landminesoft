@@ -19,4 +19,10 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
             "FROM JobApplication a WHERE a.userId = :userId " +
             "ORDER BY CASE WHEN a.status = 'PENDING' THEN 1 WHEN a.status = 'IN_PROGRESS' THEN 2 WHEN a.status = 'REJECTED' THEN 3 ELSE 4 END")
     List<Object[]> findUserApplicationsSafe(@Param("userId") Long userId);
+
+
+    // 🔥 Hired/No Response ke liye
+List<JobApplication> findByStatus(String status);
+List<JobApplication> findByStatusIn(List<String> statuses);
+
 }
