@@ -111,18 +111,15 @@ const handleLogin = async (e) => {
     const jobId = location.state?.jobId;
 
     if (data.role === "ADMIN") {
-      alert("👑 Welcome Admin!");
       navigate("/admin", { replace: true });
     } else if (from === "/careers" && jobId) {
-      navigate("/careers", {
-        replace: true,
-        state: { openJobId: jobId },
-      });
+      navigate("/careers", { replace: true, state: { openJobId: jobId } });
     } else if (from === "/careers") {
       navigate("/careers", { replace: true });
     } else {
       navigate("/", { replace: true });
     }
+
   } catch (err) {
     console.error("Login error:", err);
     setError(err.message);
@@ -130,6 +127,7 @@ const handleLogin = async (e) => {
     setLoading(false);
   }
 };
+
 
 
   const handleRegister = async (e) => {
