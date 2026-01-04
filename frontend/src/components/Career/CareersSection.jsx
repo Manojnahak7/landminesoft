@@ -103,16 +103,6 @@ const CareersSection = () => {
   }, [jobsLoading, user, location.state, jobs, navigate]);
 
 
-  useEffect(() => {
-  if (location.state?.openJobId && user) {
-    const jobId = location.state.openJobId;
-    const job = jobs.find(j => j.id === jobId);
-    if (job) {
-      setSelectedJob(job);
-      setApplyModal(true);
-    }
-  }
-}, [location.state?.openJobId, user, jobs]);
 
   const fetchJobs = async () => {
     try {
@@ -167,6 +157,7 @@ const CareersSection = () => {
     return;
   }
     setSelectedJob(job);
+    setApplyModal(true);
     setFormData({
       fullName: user.fullName || "",
       email: user.email || "",
@@ -327,14 +318,23 @@ const CareersSection = () => {
                 </div>
 
                 <p className="career-summary">{role.summary}</p>
-                <button
-                  className="career-cta"
-                  onClick={() => handleApply(role)}
-                  disabled={!user}
-                  style={{ opacity: user ? 1 : 0.6 }}
-                >
-                  {user ? "View details & apply →" : "Login to apply →"}
-                </button>
+               <button
+  className="career-cta"
+  onClick={() => handleApply(role)}
+  disabled={!user || openJobId === role.id} // 👈 Loading disable
+  style={{ 
+    opacity: user ? 1 : 0.6,
+    cursor: openJobId === role.id ? 'wait' : 'pointer'
+  }}
+>
+  {openJobId === role.id 
+    ? "Opening..." 
+    : user 
+      ? "View details & apply →" 
+      : "Login to apply →"
+  }
+</button>
+
               </div>
             ))
           )}
