@@ -558,7 +558,7 @@ className="apply-submit-btn"
 )}
 </div>
 </div>
-</div>
+{/* </div> */}
 )}
 </section>
 );
