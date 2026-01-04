@@ -57,7 +57,6 @@ const AuthPage = () => {
       yearOfPassing: form.yearOfPassing,
       cgpa: form.cgpa,
     };
-
     for (const [field, value] of Object.entries(required)) {
       if (!value || !value.trim()) {
         return field;
@@ -115,7 +114,6 @@ const AuthPage = () => {
         alert("👑 Welcome Admin!");
         navigate("/admin", { replace: true });
       } else if (from === "/careers" && jobId) {
-        // 🔥 EXACT JOB MODAL OPEN
         navigate("/careers", {
           replace: true,
           state: { openJobId: jobId }
@@ -140,9 +138,7 @@ const AuthPage = () => {
 
     const missingField = validateRequiredFields();
     if (missingField) {
-      setError(
-        `Please fill ${missingField.replace(/([A-Z])/g, " $1").toLowerCase()}`
-      );
+      setError(`Please fill ${missingField.replace(/([A-Z])/g, " $1").toLowerCase()}`);
       setLoading(false);
       return;
     }
@@ -176,12 +172,10 @@ const AuthPage = () => {
         throw new Error(data.message || "Registration failed");
       }
 
-      const data = await res.json();
       setSuccess("✅ Account created successfully!");
       setMode("login");
 
       setForm({
-        ...form,
         fullName: "",
         location: "",
         city: "",
@@ -196,6 +190,7 @@ const AuthPage = () => {
         currentCompany: "",
         currentPosition: "",
         currentSalary: "",
+        email: form.email, // Keep email
       });
     } catch (err) {
       console.error("Register error:", err);
@@ -269,22 +264,15 @@ const AuthPage = () => {
       <div className="auth-card">
         <div className="auth-header">
           <h2>
-            {mode === "login"
-              ? "Log in to Landmine Soft"
-              : mode === "register"
-              ? "Create your account"
-              : mode === "reset"
-              ? "Reset your password"
-              : "Set new password"}
+            {mode === "login" ? "Log in to Landmine Soft" :
+             mode === "register" ? "Create your account" :
+             mode === "reset" ? "Reset your password" : "Set new password"}
           </h2>
           <p>
-            {mode === "login"
-              ? "Access your applications, profile, and project updates."
-              : mode === "register"
-              ? "Join thousands of developers applying for top roles."
-              : mode === "reset"
-              ? "Enter your email and we'll send you a password reset link."
-              : "Enter your new password below."}
+            {mode === "login" ? "Access your applications, profile, and project updates." :
+             mode === "register" ? "Join thousands of developers applying for top roles." :
+             mode === "reset" ? "Enter your email and we'll send you a password reset link." :
+             "Enter your new password below."}
           </p>
         </div>
 
@@ -293,106 +281,69 @@ const AuthPage = () => {
 
         {mode === "login" ? (
           <form onSubmit={handleLogin} className="auth-form">
-            <label>
-              Email <span className="required">*</span>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
+            <label>Email <span className="required">*</span>
+              <input type="email" name="email" value={form.email} onChange={handleChange} required />
             </label>
-            <label>
-              Password <span className="required">*</span>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-              />
+            <label>Password <span className="required">*</span>
+              <input type="password" name="password" value={form.password} onChange={handleChange} required />
             </label>
-            <button
-              type="submit"
-              className="auth-primary-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Logging in..." : "Log In"}
             </button>
             <p className="auth-switch">
-              New to Landmine Soft?{" "}
-              <button type="button" onClick={() => setMode("register")}>
-                Create an account
-              </button>
+              New to Landmine Soft? <button type="button" onClick={() => setMode("register")}>Create an account</button>
             </p>
             <p className="auth-switch">
-              <button type="button" onClick={() => setMode("reset")}>
-                Forgot password?
-              </button>
+              <button type="button" onClick={() => setMode("reset")}>Forgot password?</button>
             </p>
           </form>
         ) : mode === "register" ? (
           <form onSubmit={handleRegister} className="auth-form auth-register-grid">
             <div>
-              <label>
-                Full name <span className="required">*</span>
+              <label>Full name <span className="required">*</span>
                 <input name="fullName" value={form.fullName} onChange={handleChange} required />
               </label>
-              <label>
-                Email <span className="required">*</span>
+              <label>Email <span className="required">*</span>
                 <input type="email" name="email" value={form.email} onChange={handleChange} required />
               </label>
-              <label>
-                Password <span className="required">*</span>
+              <label>Password <span className="required">*</span>
                 <input type="password" name="password" value={form.password} onChange={handleChange} required />
               </label>
-              <label>
-                Phone <span className="required">*</span>
+              <label>Phone <span className="required">*</span>
                 <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
               </label>
-              <label>
-                Location <span className="required">*</span>
+              <label>Location <span className="required">*</span>
                 <input name="location" value={form.location} onChange={handleChange} placeholder="e.g. Telangana" required />
               </label>
             </div>
             <div>
-              <label>
-                College <span className="required">*</span>
+              <label>College <span className="required">*</span>
                 <input name="collegeName" value={form.collegeName} onChange={handleChange} required />
               </label>
-              <label>
-                Degree <span className="required">*</span>
+              <label>Degree <span className="required">*</span>
                 <input name="degree" value={form.degree} onChange={handleChange} placeholder="e.g. B.Tech" required />
               </label>
-              <label>
-                Year of Passing <span className="required">*</span>
+              <label>Year of Passing <span className="required">*</span>
                 <input name="yearOfPassing" value={form.yearOfPassing} onChange={handleChange} placeholder="e.g. 2023" required />
               </label>
-              <label>
-                CGPA <span className="required">*</span>
+              <label>CGPA <span className="required">*</span>
                 <input name="cgpa" value={form.cgpa} onChange={handleChange} placeholder="e.g. 8.5" required />
               </label>
-              <label>
-                City <span className="required">*</span>
+              <label>City <span className="required">*</span>
                 <input name="city" value={form.city} onChange={handleChange} placeholder="e.g. Hyderabad" required />
               </label>
-              <label>
-                Pincode <span className="required">*</span>
+              <label>Pincode <span className="required">*</span>
                 <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="e.g. 500001" required />
               </label>
             </div>
             <div className="work-fields">
-              <label>
-                Current Company (Optional)
+              <label>Current Company (Optional)
                 <input name="currentCompany" value={form.currentCompany} onChange={handleChange} placeholder="e.g. TalVoy Partners" />
               </label>
-              <label>
-                Current Position (Optional)
+              <label>Current Position (Optional)
                 <input name="currentPosition" value={form.currentPosition} onChange={handleChange} placeholder="e.g. Developer" />
               </label>
-              <label>
-                Current Salary (Optional)
+              <label>Current Salary (Optional)
                 <input name="currentSalary" value={form.currentSalary} onChange={handleChange} placeholder="e.g. 5 LPA" />
               </label>
             </div>
@@ -400,44 +351,34 @@ const AuthPage = () => {
               {loading ? "Creating Account..." : "Create Account"}
             </button>
             <p className="auth-switch">
-              Already have account?{" "}
-              <button type="button" onClick={() => setMode("login")}>
-                Log in
-              </button>
+              Already have account? <button type="button" onClick={() => setMode("login")}>Log in</button>
             </p>
           </form>
         ) : mode === "reset" ? (
           <form onSubmit={handleResetPassword} className="auth-form">
-            <label>
-              Email <span className="required">*</span>
+            <label>Email <span className="required">*</span>
               <input type="email" name="email" value={form.email} onChange={handleChange} required />
             </label>
             <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Sending..." : "Send Reset Link"}
             </button>
             <p className="auth-switch">
-              <button type="button" onClick={() => setMode("login")}>
-                Back to login
-              </button>
+              <button type="button" onClick={() => setMode("login")}>Back to login</button>
             </p>
           </form>
         ) : (
           <form onSubmit={handleResetPasswordConfirm} className="auth-form">
-            <label>
-              New Password <span className="required">*</span>
+            <label>New Password <span className="required">*</span>
               <input type="password" name="password" value={form.password} onChange={handleChange} required autoFocus />
             </label>
-            <label>
-              Confirm Password <span className="required">*</span>
+            <label>Confirm Password <span className="required">*</span>
               <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
             </label>
             <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Resetting..." : "Reset Password"}
             </button>
             <p className="auth-switch">
-              <button type="button" onClick={() => setMode("login")}>
-                Back to login
-              </button>
+              <button type="button" onClick={() => setMode("login")}>Back to login</button>
             </p>
           </form>
         )}
