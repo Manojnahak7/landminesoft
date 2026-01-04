@@ -1,12 +1,8 @@
-CareersSection.jsx
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "../Career/CareersSection.css";
-// import { Link } from "react-router-dom";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-
-// const API_BASE = "http://localhost:7689";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const fallbackRoles = [
@@ -17,8 +13,7 @@ const fallbackRoles = [
     location: "Hyderabad, India",
     salary: "₹6-12 LPA",
     experience: "0-2 Years",
-    summary:
-      "Work with our core team on AI‑driven web apps using React, Spring Boot, and cloud‑native APIs.",
+    summary: "Work with our core team on AI‑driven web apps using React, Spring Boot, and cloud‑native APIs.",
     createdAt: "2025-12-20T10:30:00Z",
   },
   {
@@ -28,8 +23,7 @@ const fallbackRoles = [
     location: "Hyderabad / Remote",
     salary: "₹15-25 LPA",
     experience: "2-5 Years",
-    summary:
-      "Build and deploy ML models, RAG pipelines, and LLM integrations for real client projects.",
+    summary: "Build and deploy ML models, RAG pipelines, and LLM integrations for real client projects.",
     createdAt: "2025-12-22T14:15:00Z",
   },
   {
@@ -39,20 +33,17 @@ const fallbackRoles = [
     location: "Hyderabad, India",
     salary: "₹10-18 LPA",
     experience: "1-4 Years",
-    summary:
-      "Design secure, scalable backend services, REST APIs, and data layers for our platforms.",
+    summary: "Design secure, scalable backend services, REST APIs, and data layers for our platforms.",
     createdAt: "2025-12-23T09:45:00Z",
   },
-  // 🔥 INTERNSHIP JOB - salary: "0"
   {
     id: 4,
     title: "Software Engineering Intern",
     type: "Internship · Full‑time",
     location: "Hyderabad, India",
-    salary: "0", // 🔥 0 salary = internship/unpaid
+    salary: "0",
     experience: "0-1 Years",
-    summary:
-      "Hands-on experience building real web apps with React + Spring Boot. Perfect for freshers!",
+    summary: "Hands-on experience building real web apps with React + Spring Boot. Perfect for freshers!",
     createdAt: "2025-12-25T09:00:00Z",
   },
 ];
@@ -67,11 +58,11 @@ const perks = [
 const CareersSection = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-const location = useLocation();
+  const location = useLocation();
+  
   const [jobs, setJobs] = useState([]);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [selectedJob, setSelectedJob] = useState(null);
   const [applyModal, setApplyModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -85,42 +76,29 @@ const location = useLocation();
   }, []);
 
   useEffect(() => {
-  if (!jobsLoading && user && location.state?.openJobId) {
-    const jobIdToOpen = location.state.openJobId;
-    const job = jobs.find((j) => j.id === jobIdToOpen);
+    if (!jobsLoading && user && location.state?.openJobId) {
+      const jobIdToOpen = location.state.openJobId;
+      const job = jobs.find((j) => j.id === jobIdToOpen);
 
-    if (job) {
-      // Same as normal apply (without login check)
-      setSelectedJob(job);
-      setFormData({
-        fullName: user.fullName || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        location: user.location || "",
-        collegeName: user.collegeName || "",
-        city: user.city || "",
-        cgpa: user.cgpa || "",
-        currentCompany: user.currentCompany || "",
-        currentSalary: user.currentSalary || "",
-        expectedSalary: "",
-      });
-      setApplyModal(true);
-
-      // 🔥 state clean karo taaki back/refresh pe dobara na khule
-      navigate("/careers", { replace: true });
+      if (job) {
+        setSelectedJob(job);
+        setFormData({
+          fullName: user.fullName || "",
+          email: user.email || "",
+          phone: user.phone || "",
+          location: user.location || "",
+          collegeName: user.collegeName || "",
+          city: user.city || "",
+          cgpa: user.cgpa || "",
+          currentCompany: user.currentCompany || "",
+          currentSalary: user.currentSalary || "",
+          expectedSalary: "",
+        });
+        setApplyModal(true);
+        navigate("/careers", { replace: true });
+      }
     }
-  }
-}, [jobsLoading, user, location.state, jobs, navigate]);
-
-
-
-//   useEffect(() => {
-//   // Track page visit
-//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
-//     method: 'POST',
-//     credentials: 'include' 
-//   }).catch(console.error);
-// }, []);
+  }, [jobsLoading, user, location.state, jobs, navigate]);
 
   const fetchJobs = async () => {
     try {
@@ -159,7 +137,6 @@ const location = useLocation();
     });
   };
 
-  // 🔥 CHECK IF JOB IS INTERNSHIP (salary === "0")
   const isInternship = (job) => {
     return job.salary === "0" || job.salary === 0 || !job.salary;
   };
@@ -172,8 +149,6 @@ const location = useLocation();
     }
 
     setSelectedJob(job);
-
-    // 🔥 Load user profile data
     setFormData({
       fullName: user.fullName || "",
       email: user.email || "",
@@ -186,7 +161,6 @@ const location = useLocation();
       currentSalary: user.currentSalary || "",
       expectedSalary: "",
     });
-
     setApplyModal(true);
   };
 
@@ -213,8 +187,6 @@ const location = useLocation();
       return;
     }
 
-    // console.log("👤 USER:", user);
-    // console.log("📧 EMAIL:", user.email);
     setApplying(true);
 
     try {
@@ -222,40 +194,27 @@ const location = useLocation();
       formDataToSend.append("jobId", selectedJob.id.toString());
       formDataToSend.append("resume", resumeFile);
       formDataToSend.append("fullName", formData.fullName);
-      formDataToSend.append("email", formData.email); // ✅ Backend validates this
+      formDataToSend.append("email", formData.email);
       formDataToSend.append("phone", formData.phone);
       formDataToSend.append("location", formData.location);
       formDataToSend.append("collegeName", formData.collegeName);
       formDataToSend.append("city", formData.city);
       formDataToSend.append("cgpa", formData.cgpa);
       formDataToSend.append("currentCompany", formData.currentCompany || "");
-
-      // 🔥 ONLY ADD SALARY FIELDS IF NOT INTERNSHIP
-      // if (!isInternship(selectedJob)) {
-      //   formDataToSend.append("currentSalary", formData.currentSalary || "");
-      //   formDataToSend.append("expectedSalary", formData.expectedSalary);
-
-      // }
       formDataToSend.append("currentSalary", formData.currentSalary || "");
       formDataToSend.append("expectedSalary", formData.expectedSalary || "");
 
-      // console.log("📤 Submitting Job ID:", selectedJob.id);
-      // console.log("🎯 Is Internship?", isInternship(selectedJob));
-
-      // 🔥 CRITICAL: NO Authorization header with FormData (CORS fix)
       const res = await fetch(`${API_BASE}/api/auth/jobs/apply`, {
         method: "POST",
-        body: formDataToSend, // ✅ NO HEADERS - Let browser handle multipart
+        body: formDataToSend,
       });
 
       const data = await res.json();
-      // console.log("📥 Response:", res.status, data);
 
       if (!res.ok) {
         throw new Error(data.message || `HTTP ${res.status}`);
       }
 
-      // console.log("✅ Application submitted successfully!");
       setApplySuccess(true);
 
       setTimeout(() => {
@@ -477,7 +436,6 @@ const location = useLocation();
                     </div>
                   </div>
 
-                  {/* 🔥 HIDE SALARY FIELDS FOR INTERNSHIPS */}
                   {!isInternship(selectedJob) && (
                     <div className="form-row">
                       <div className="form-group">
@@ -504,7 +462,6 @@ const location = useLocation();
                     </div>
                   )}
 
-                  {/* 🔥 INTERNSHIP MESSAGE */}
                   {isInternship(selectedJob) && (
                     <div
                       style={{
@@ -513,7 +470,7 @@ const location = useLocation();
                         borderRadius: "8px",
                         padding: "1rem",
                         marginBottom: "1rem",
-                        fontSize: "14px",
+                        fontSize: "14px"
                       }}
                     >
                       💡 <strong>Internship Opportunity:</strong> No salary. Focus on gaining real project experience!
