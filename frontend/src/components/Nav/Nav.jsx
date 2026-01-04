@@ -1,192 +1,3 @@
-// import React, { useState } from "react";
-// import { Link, NavLink } from "react-router-dom";
-// import "../Nav/Nav.css";
-// import logo from "../../assets/landminelogo.png";
-// import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
-// import { useAuth } from "../../context/AuthContext";
-
-// export const Nav = () => {
-//   const [mobileOpen, setMobileOpen] = useState(false);
-//   const { user, loading } = useAuth();
-
-//   if (loading) return null;
-
-//   const toggleMobileMenu = () => {
-//     setMobileOpen(!mobileOpen);
-//   };
-
-//   const handleCloseMenu = () => {
-//     setMobileOpen(false);
-//   };
-
-//   return (
-//     <>
-//       <nav className="navbar">
-//         {/* Left - Logo */}
-//         <div className="navbar-logo">
-//           {/* <Link to="/">
-//             <img src={logo} alt="Company Logo" />
-//           </Link> */}
-//           <Link to="/">
-//             <img src={logo} alt="Company Logo" />
-//           </Link>
-//         </div>
-
-//         {/* Desktop Menu */}
-//         <ul className="navbar-menu">
-//           <li>
-//             <NavLink
-//               to="/about"
-//               className={({ isActive }) =>
-//                 isActive ? "nav-link active" : "nav-link"
-//               }
-//             >
-//               About
-//             </NavLink>
-//           </li>
-//           <li>
-//             <NavLink
-//               to="/services"
-//               className={({ isActive }) =>
-//                 isActive ? "nav-link active" : "nav-link"
-//               }
-//             >
-//               Services
-//             </NavLink>
-//           </li>
-//           <li>
-//             <NavLink
-//               to="/careers"
-//               className={({ isActive }) =>
-//                 isActive ? "nav-link active" : "nav-link"
-//               }
-//             >
-//               Careers
-//             </NavLink>
-//           </li>
-//         </ul>
-
-//         {/* Mobile Hamburger */}
-//         <div className="navbar-hamburger" onClick={toggleMobileMenu}>
-//           {mobileOpen ? (
-//             <FaTimes className="hamburger-icon" />
-//           ) : (
-//             <FaBars className="hamburger-icon" />
-//           )}
-//         </div>
-//       </nav>
-//       {mobileOpen && (
-//         <div className="mobile-menu-overlay" onClick={handleCloseMenu}>
-//           <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
-//             {/* Close Button */}
-//             <div className="mobile-close-btn" onClick={handleCloseMenu}>
-//               <FaTimes className="close-icon" />
-//             </div>
-
-//             {/* 1️⃣ Main nav items */}
-//             <NavLink
-//               to="/about"
-//               className="mobile-nav-link"
-//               onClick={handleCloseMenu}
-//             >
-//               About
-//             </NavLink>
-//             <NavLink
-//               to="/services"
-//               className="mobile-nav-link"
-//               onClick={handleCloseMenu}
-//             >
-//               Services
-//             </NavLink>
-//             <NavLink
-//               to="/careers"
-//               className="mobile-nav-link"
-//               onClick={handleCloseMenu}
-//             >
-//               Careers
-//             </NavLink>
-
-//             {/* 2️⃣ Login / User just after main nav */}
-//             <div className="mobile-user-section">
-//               {!user ? (
-//                 <NavLink
-//                   to="/auth"
-//                   className="mobile-login-link"
-//                   onClick={handleCloseMenu}
-//                 >
-//                   👤 Log In
-//                 </NavLink>
-//               ) : (
-//                 <div className="mobile-user-dropdown">
-//                   <div className="mobile-user-trigger">
-//                     <FaUserCircle className="mobile-user-icon" />
-//                     <span>{user.fullName?.split(" ")[0] || "User"}</span>
-//                   </div>
-//                   <div className="mobile-user-menu">
-//                     <button
-//                       onClick={() => {
-//                         handleCloseMenu();
-//                         window.location.href = "/profile";
-//                       }}
-//                     >
-//                       👤 View / Edit profile
-//                     </button>
-//                     {user.role === "ADMIN" && (
-//                       <button
-//                         onClick={() => {
-//                           handleCloseMenu();
-//                           window.location.href = "/admin";
-//                         }}
-//                       >
-//                         🖥️ Admin Dashboard
-//                       </button>
-//                     )}
-//                     <button
-//                       onClick={() => {
-//                         handleCloseMenu();
-//                         window.location.href = "/";
-//                       }}
-//                     >
-//                       🚪 Logout
-//                     </button>
-//                   </div>
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* 3️⃣ TopNav items last: Get a Demo, Support, Contact */}
-//             <div className="mobile-topnav-items">
-//               <NavLink
-//                 to="/getdemo"
-//                 className="mobile-topnav-link"
-//                 onClick={handleCloseMenu}
-//               >
-//                 Get a Demo
-//               </NavLink>
-//               <NavLink
-//                 to="/support"
-//                 className="mobile-topnav-link"
-//                 onClick={handleCloseMenu}
-//               >
-//                 Support
-//               </NavLink>
-//               <NavLink
-//                 to="/contact"
-//                 className="mobile-topnav-link"
-//                 onClick={handleCloseMenu}
-//               >
-//                 Contact Us
-//               </NavLink>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// };
-
-
-
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../Nav/Nav.css";
@@ -197,16 +8,6 @@ import { useAuth } from "../../context/AuthContext";
 export const Nav = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, loading } = useAuth();
-
-  // 👈 PERFECT ROUTING LOGIC!
-  const isCareersSubdomain = window.location.hostname.includes('careers');
-  const MAIN_DOMAIN = 'https://www.landminesoft.com';
-
-  const getNavUrl = (path) => {
-    return isCareersSubdomain 
-      ? `${MAIN_DOMAIN}${path}`     // External: www.landminesoft.com/about
-      : path;                       // Internal SPA: /about
-  };
 
   if (loading) return null;
 
@@ -223,11 +24,10 @@ export const Nav = () => {
       <nav className="navbar">
         {/* Left - Logo */}
         <div className="navbar-logo">
-          <Link 
-            to={getNavUrl('/')}
-            target={isCareersSubdomain ? "_blank" : "_self"}
-            rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
-          >
+          {/* <Link to="/">
+            <img src={logo} alt="Company Logo" />
+          </Link> */}
+          <Link to="/">
             <img src={logo} alt="Company Logo" />
           </Link>
         </div>
@@ -236,9 +36,7 @@ export const Nav = () => {
         <ul className="navbar-menu">
           <li>
             <NavLink
-              to={getNavUrl('/about')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/about"
               className={({ isActive }) =>
                 isActive ? "nav-link active" : "nav-link"
               }
@@ -248,9 +46,7 @@ export const Nav = () => {
           </li>
           <li>
             <NavLink
-              to={getNavUrl('/services')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/services"
               className={({ isActive }) =>
                 isActive ? "nav-link active" : "nav-link"
               }
@@ -260,9 +56,7 @@ export const Nav = () => {
           </li>
           <li>
             <NavLink
-              to={getNavUrl('/careers')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/careers"
               className={({ isActive }) =>
                 isActive ? "nav-link active" : "nav-link"
               }
@@ -291,38 +85,32 @@ export const Nav = () => {
 
             {/* 1️⃣ Main nav items */}
             <NavLink
-              to={getNavUrl('/about')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/about"
               className="mobile-nav-link"
               onClick={handleCloseMenu}
             >
               About
             </NavLink>
             <NavLink
-              to={getNavUrl('/services')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/services"
               className="mobile-nav-link"
               onClick={handleCloseMenu}
             >
               Services
             </NavLink>
             <NavLink
-              to={getNavUrl('/careers')}
-              target={isCareersSubdomain ? "_blank" : "_self"}
-              rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+              to="/careers"
               className="mobile-nav-link"
               onClick={handleCloseMenu}
             >
               Careers
             </NavLink>
 
-            {/* 2️⃣ Login / User - INTERNAL (same domain) */}
+            {/* 2️⃣ Login / User just after main nav */}
             <div className="mobile-user-section">
               {!user ? (
                 <NavLink
-                  to="/auth"  // 👈 Internal - no prefix
+                  to="/auth"
                   className="mobile-login-link"
                   onClick={handleCloseMenu}
                 >
@@ -335,24 +123,30 @@ export const Nav = () => {
                     <span>{user.fullName?.split(" ")[0] || "User"}</span>
                   </div>
                   <div className="mobile-user-menu">
-                    <button onClick={() => {
-                      handleCloseMenu();
-                      window.location.href = "/profile";
-                    }}>
+                    <button
+                      onClick={() => {
+                        handleCloseMenu();
+                        window.location.href = "/profile";
+                      }}
+                    >
                       👤 View / Edit profile
                     </button>
                     {user.role === "ADMIN" && (
-                      <button onClick={() => {
-                        handleCloseMenu();
-                        window.location.href = "/admin";
-                      }}>
+                      <button
+                        onClick={() => {
+                          handleCloseMenu();
+                          window.location.href = "/admin";
+                        }}
+                      >
                         🖥️ Admin Dashboard
                       </button>
                     )}
-                    <button onClick={() => {
-                      handleCloseMenu();
-                      window.location.href = "/";
-                    }}>
+                    <button
+                      onClick={() => {
+                        handleCloseMenu();
+                        window.location.href = "/";
+                      }}
+                    >
                       🚪 Logout
                     </button>
                   </div>
@@ -360,30 +154,24 @@ export const Nav = () => {
               )}
             </div>
 
-            {/* 3️⃣ TopNav items */}
+            {/* 3️⃣ TopNav items last: Get a Demo, Support, Contact */}
             <div className="mobile-topnav-items">
               <NavLink
-                to={getNavUrl('/getdemo')}
-                target={isCareersSubdomain ? "_blank" : "_self"}
-                rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+                to="/getdemo"
                 className="mobile-topnav-link"
                 onClick={handleCloseMenu}
               >
                 Get a Demo
               </NavLink>
               <NavLink
-                to={getNavUrl('/support')}
-                target={isCareersSubdomain ? "_blank" : "_self"}
-                rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+                to="/support"
                 className="mobile-topnav-link"
                 onClick={handleCloseMenu}
               >
                 Support
               </NavLink>
               <NavLink
-                to={getNavUrl('/contact')}
-                target={isCareersSubdomain ? "_blank" : "_self"}
-                rel={isCareersSubdomain ? "noopener noreferrer" : undefined}
+                to="/contact"
                 className="mobile-topnav-link"
                 onClick={handleCloseMenu}
               >
@@ -396,3 +184,6 @@ export const Nav = () => {
     </>
   );
 };
+
+
+
