@@ -45,7 +45,7 @@ const Footer = () => {
 
         <div className="lm-footer-right">
           <p className="lm-footer-small">contact@landminesoft.com</p>
-          <p className="lm-footer-small">+91‑98XX‑XXX‑XXX</p>
+          <p className="lm-footer-small">+91‑90590‑24‑653</p>
 
           {/* Social Media Icons */}
           <div className="lm-social-icons">
