@@ -70,6 +70,8 @@ const CareersSection = () => {
   const [formData, setFormData] = useState({});
   const [applying, setApplying] = useState(false);
   const [applySuccess, setApplySuccess] = useState(false);
+  const [openJobId, setOpenJobId] = useState(null);
+
 
   useEffect(() => {
     fetchJobs();
@@ -99,6 +101,18 @@ const CareersSection = () => {
       }
     }
   }, [jobsLoading, user, location.state, jobs, navigate]);
+
+
+  useEffect(() => {
+  if (location.state?.openJobId && user) {
+    const jobId = location.state.openJobId;
+    const job = jobs.find(j => j.id === jobId);
+    if (job) {
+      setSelectedJob(job);
+      setApplyModal(true);
+    }
+  }
+}, [location.state?.openJobId, user, jobs]);
 
   const fetchJobs = async () => {
     try {
