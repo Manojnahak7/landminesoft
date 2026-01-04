@@ -320,12 +320,12 @@ const CareersSection = () => {
                 <p className="career-summary">{role.summary}</p>
                <button
   className="career-cta"
-  onClick={() => handleApply(role)}
-  disabled={!user || openJobId === role.id} // 👈 Loading disable
-                 onClick={() => {
-  console.log("🔥 Button clicked! User:", user); // Check console
-  handleApply(role);
-}}
+onClick={() => {
+    console.log("🔥 Button clicked! User:", user, "Job:", role.id); // 👈 Debug
+    handleApply(role);
+  }}
+                 disabled={!user || openJobId === role.id} // 👈 Loading disable
+               
 
   style={{ 
     opacity: user ? 1 : 0.6,
