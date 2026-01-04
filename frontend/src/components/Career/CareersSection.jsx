@@ -322,6 +322,11 @@ const CareersSection = () => {
   className="career-cta"
   onClick={() => handleApply(role)}
   disabled={!user || openJobId === role.id} // 👈 Loading disable
+                 onClick={() => {
+  console.log("🔥 Button clicked! User:", user); // Check console
+  handleApply(role);
+}}
+
   style={{ 
     opacity: user ? 1 : 0.6,
     cursor: openJobId === role.id ? 'wait' : 'pointer'
