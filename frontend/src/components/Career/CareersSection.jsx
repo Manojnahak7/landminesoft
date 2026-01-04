@@ -318,7 +318,7 @@ const CareersSection = () => {
                 </div>
 
                 <p className="career-summary">{role.summary}</p>
-               <button
+               {/* <button
   className="career-cta"
 onClick={() => {
     console.log("🔥 Button clicked! User:", user, "Job:", role.id); // 👈 Debug
@@ -338,7 +338,32 @@ onClick={() => {
       ? "View details & apply →" 
       : "Login to apply →"
   }
+</button> */}
+
+                <button
+  style={{
+    background: "#ef4444",
+    color: "white",
+    padding: "20px 30px",
+    fontSize: "18px",
+    border: "none",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+    pointerEvents: "auto",
+    zIndex: 9999,
+    position: "relative"
+  }}
+  onClick={() => {
+    alert("🎉 BUTTON WORKS!"); // 👈 YE POPUP AAYEGA
+    console.log("🚀 handleApply called");
+    handleApply(role);
+  }}
+>
+  🔥 TEST LOGIN
 </button>
+
 
               </div>
             ))
