@@ -340,29 +340,28 @@ onClick={() => {
   }
 </button> */}
 
-                <button
-  style={{
-    background: "#ef4444",
-    color: "white",
-    padding: "20px 30px",
-    fontSize: "18px",
-    border: "none",
-    borderRadius: "12px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-    pointerEvents: "auto",
-    zIndex: 9999,
-    position: "relative"
+  <button   
+  className="career-cta"
+  style={{ 
+    pointerEvents: "auto !important",     // 👈 YE ADD
+    zIndex: 9999,                        // 👈 YE ADD  
+    opacity: user ? 1 : 0.6,
+    cursor: openJobId === role.id ? 'wait' : 'pointer'
   }}
   onClick={() => {
-    alert("🎉 BUTTON WORKS!"); // 👈 YE POPUP AAYEGA
-    console.log("🚀 handleApply called");
+    console.log("✅ WORKING! User:", user, "Job:", role.id);
     handleApply(role);
   }}
+  disabled={!user || openJobId === role.id}
 >
-  🔥 TEST LOGIN
+  {openJobId === role.id 
+    ? "Opening..." 
+    : user 
+      ? "View details & apply →" 
+      : "Login to apply →"
+  }
 </button>
+
 
 
               </div>
