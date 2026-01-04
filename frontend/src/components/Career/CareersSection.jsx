@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "../Career/CareersSection.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// const API_BASE = "http://localhost:7689";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const fallbackRoles = [
@@ -62,7 +62,6 @@ const CareersSection = () => {
   const [jobs, setJobs] = useState([]);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [selectedJob, setSelectedJob] = useState(null);
   const [applyModal, setApplyModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -79,7 +78,6 @@ const CareersSection = () => {
     if (!jobsLoading && user && location.state?.openJobId) {
       const jobIdToOpen = location.state.openJobId;
       const job = jobs.find((j) => j.id === jobIdToOpen);
-
       if (job) {
         setSelectedJob(job);
         setFormData({
@@ -243,10 +241,9 @@ const CareersSection = () => {
     setSelectedJob(null);
   };
 
-  if (authLoading)
-    return (
-      <div style={{ padding: "2rem", textAlign: "center" }}>🔄 Loading...</div>
-    );
+  if (authLoading) {
+    return <div style={{ padding: "2rem", textAlign: "center" }}>🔄 Loading...</div>;
+  }
 
   return (
     <section className="careers">
@@ -279,7 +276,7 @@ const CareersSection = () => {
               }}
               onClick={() =>
                 navigate("/auth", {
-                  state: { from: "/careers" }, 
+                  state: { from: "/careers" },
                 })
               }
             >
@@ -536,8 +533,9 @@ const CareersSection = () => {
             </div>
           </div>
         )}
-      </section>
-    );
-  };
+      </div>
+    </section>
+  );
+};
 
 export default CareersSection;
