@@ -143,11 +143,15 @@ const CareersSection = () => {
 
   const handleApply = async (job) => {
     if (!user) {
-      alert("⚠️ Please login to apply for jobs!");
-      window.location.href = "/login";
-      return;
-    }
-
+    // 🔥 PASS JOB ID TO LOGIN PAGE
+    navigate("/auth", { 
+      state: { 
+        from: "/careers", 
+        jobId: job.id  // ← CRITICAL: Specific job ID
+      } 
+    });
+    return;
+  }
     setSelectedJob(job);
     setFormData({
       fullName: user.fullName || "",
