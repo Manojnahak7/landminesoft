@@ -8,18 +8,18 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const fallbackRoles = [
   {
     id: 1,
-    title: "Junior Full-Stack Developer", // ‑ हटाया
-    type: "Full-time On-site / Hybrid",    // ‑ हटाया
+    title: "Junior Full-Stack Developer", 
+    type: "Full-time On-site / Hybrid", 
     location: "Hyderabad, India",
     salary: "Rs6-12 LPA",
     experience: "0-2 Years",
-    summary: "Work with our core team on AI-driven web apps using React, Spring Boot, and cloud-native APIs.", // ‑ हटाया
+    summary: "Work with our core team on AI-driven web apps using React, Spring Boot, and cloud-native APIs.", 
     createdAt: "2025-12-20T10:30:00Z",
   },
   {
     id: 2,
     title: "AI / ML Engineer",
-    type: "Full-time Remote Friendly",     // ‑ हटाया
+    type: "Full-time Remote Friendly",     
     location: "Hyderabad / Remote",
     salary: "Rs15-25 LPA",
     experience: "2-5 Years",
@@ -29,7 +29,7 @@ const fallbackRoles = [
   {
     id: 3,
     title: "Backend Developer (Java)",
-    type: "Full-time",                     // ‑ हटाया
+    type: "Full-time",                    
     location: "Hyderabad, India",
     salary: "Rs10-18 LPA",
     experience: "1-4 Years",
@@ -39,7 +39,7 @@ const fallbackRoles = [
   {
     id: 4,
     title: "Software Engineering Intern",
-    type: "Internship Full-time",          // ‑ हटाया
+    type: "Internship Full-time",        
     location: "Hyderabad, India",
     salary: "0",
     experience: "0-1 Years",
@@ -145,32 +145,7 @@ useEffect(() => {
     return job.salary === "0" || job.salary === 0 || !job.salary;
   };
 
-  // const handleApply = async (job) => {
-  //   if (!user) {
-  //     alert("⚠️ Please login to apply for jobs!");
-  //     window.location.href = "/login";
-  //     return;
-  //   }
-
-  //   setSelectedJob(job);
-
-  //   // 🔥 Load user profile data
-  //   setFormData({
-  //     fullName: user.fullName || "",
-  //     email: user.email || "",
-  //     phone: user.phone || "",
-  //     location: user.location || "",
-  //     collegeName: user.collegeName || "",
-  //     city: user.city || "",
-  //     cgpa: user.cgpa || "",
-  //     currentCompany: user.currentCompany || "",
-  //     currentSalary: user.currentSalary || "",
-  //     expectedSalary: "",
-  //   });
-
-  //   setApplyModal(true);
-  // };
-
+  
   const handleApply = async (job) => {
   if (!user) {
     navigate("/auth", {
@@ -296,133 +271,297 @@ useEffect(() => {
       <div style={{ padding: "2rem", textAlign: "center" }}>🔄 Loading...</div>
     );
 
-    return (
-    <section className="careers">
-      <div className="careers-header">
-        <p className="careers-eyebrow">CAREERS</p>
-        <h2 className="careers-title">Build the future with Landmine Soft</h2>
-        <p className="careers-subtitle">
-          Join a small, focused engineering team working on AI-powered products,
-          modern web platforms, and cloud solutions for global clients.
-        </p>
-        {error && (
-          <p style={{ color: "#ef4444", fontSize: "14px", marginTop: "10px" }}>
-            {error}
-          </p>
-        )}
-        {!user && (
-          <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
-            👤 
-            <button
-              type="button"
-              style={{
-                border: "none",
-                background: "none",
-                color: "#3b82f6",
-                cursor: "pointer",
-                textDecoration: "underline",
-                padding: 0,
-                marginLeft: "4px",
-              }}
-              onClick={() =>
-                navigate("/auth", {
-                  state: { from: "/careers" },
-                })
-              }
-            >
-              Login
-            </button>{" "}
-            to apply for jobs
-          </p>
-        )}
-      </div>
+ return (
+<section className="careers">
+<div className="careers-header">
+<p className="careers-eyebrow">CAREERS</p>
+<h2 className="careers-title">Build the future with Landmine Soft</h2>
+<p className="careers-subtitle">
+Join a small, focused engineering team working on AI‑powered products,
+modern web platforms, and cloud solutions for global clients.
+</p>
+{error && (
+<p style={{ color: "#ef4444", fontSize: "14px", marginTop: "10px" }}>
+{error}
+</p>
+)}
 
-      <div className="careers-layout">
-        <div className="careers-left">
-          <h3 className="careers-left-title">Why work with us?</h3>
-          <ul className="careers-perks">
-            {perks.map((perk) => (
-              <li key={perk}>{perk}</li>
-            ))}
-          </ul>
-          <p className="careers-note">
-            Don't see the right role? Send your CV to{" "}
-            <span>careers@landminesoft.com</span>
-          </p>
-        </div>
+{!user && (
+<p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
+👤
+<button
+type="button"
+style={{
+border: "none",
+background: "none",
+color: "#3b82f6",
+cursor: "pointer",
+textDecoration: "underline",
+padding: 0,
+marginLeft: "4px",
+}}
+onClick={() =>
+navigate("/auth", {
+state: { from: "/careers" }, 
+})
+}
+>
+Login
+</button>{" "}
+to apply for jobs
+</p>
+)}
 
-        <div className="careers-right">
-          {jobsLoading ? (
-            <div style={{ fontSize: "18px", margin: "2rem 0" }}>
-              🔄 Loading jobs...
-            </div>
-          ) : jobs.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "2rem" }}>
-              <div style={{ fontSize: "48px", marginBottom: "1rem" }}>📭</div>
-              <h3>No jobs available</h3>
-            </div>
-          ) : (
-            jobs.map((role) => (
-              <div key={role.id || role.title} className="career-card">
-                <div className="career-card-top">
-                  <h3 className="career-role">{role.title}</h3>
-                  <p className="career-type">{role.type}</p>
-                </div>
-                <p className="career-location">{role.location}</p>
-                <div className="career-meta">
-                  <span className="career-salary">Rs {role.salary}</span>
-                  <span className="career-experience">📈 {role.experience}</span>
-                  <span className="career-posted">📅 {timeAgo(role.createdAt)}</span>
-                </div>
-                <p className="career-summary">{role.summary}</p>
-                <button
-                  className="career-cta"
-                  onClick={() => handleApply(role)}
-                  disabled={!user}
-                  style={{ opacity: user ? 1 : 0.6 }}
-                >
-                  {user ? "View details & apply →" : "Login to apply →"}
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
 
-      {/* 🔥 MODAL OUTSIDE LAYOUT - Properly closed */}
-      {applyModal && selectedJob && (
-        <div className="apply-modal-overlay" onClick={handleCloseModal}>
-          <div className="apply-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>📋 Apply for {selectedJob.title}</h3>
-              <span className="job-id">Job ID: #{selectedJob.id}</span>
-              <button className="close-btn" onClick={handleCloseModal}>
-                ×
-              </button>
-            </div>
-            <div className="modal-body">
-              {/* form code same rahega */}
-              {applySuccess ? (
-                <div className="success-message">
-                  <div style={{ fontSize: "48px", marginBottom: "1rem" }}>✅</div>
-                  <h3>You've successfully applied!</h3>
-                  <p className="success-job-title">{selectedJob.title}</p>
-                  <p style={{ color: "#6b7280" }}>
-                    We'll review your application soon!
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmitApplication} className="apply-form">
-                  {/* saara form code same */}
-                  {/* ... tera existing form code copy-paste kar de ... */}
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </section>  // ✅ YEHI PROPERLY CLOSE HUA
-  );
+<div className="careers-layout">
+<div className="careers-left">
+<h3 className="careers-left-title">Why work with us?</h3>
+<ul className="careers-perks">
+{perks.map((perk) => (
+<li key={perk}>{perk}</li>
+))}
+</ul>
+<p className="careers-note">
+Don't see the right role? Send your CV to{" "}
+<span>careers@landminesoft.com</span>
+</p>
+</div>
+
+<div className="careers-right">
+{jobsLoading ? (
+<div style={{ fontSize: "18px", margin: "2rem 0" }}>
+🔄 Loading jobs...
+</div>
+) : jobs.length === 0 ? (
+<div style={{ textAlign: "center", padding: "2rem" }}>
+<div style={{ fontSize: "48px", marginBottom: "1rem" }}>📭</div>
+<h3>No jobs available</h3>
+</div>
+) : (
+jobs.map((role) => (
+<div key={role.id || role.title} className="career-card">
+<div className="career-card-top">
+<h3 className="career-role">{role.title}</h3>
+<p className="career-type">{role.type}</p>
+</div>
+<p className="career-location">{role.location}</p>
+
+<div className="career-meta">
+<span className="career-salary">💰 {role.salary}</span>
+<span className="career-experience">
+📈 {role.experience}
+</span>
+<span className="career-posted">
+📅 {timeAgo(role.createdAt)}
+</span>
+</div>
+
+<p className="career-summary">{role.summary}</p>
+<button
+className="career-cta"
+onClick={() => handleApply(role)}
+disabled={!user}
+style={{ opacity: user ? 1 : 0.6 }}
+>
+{user ? "View details & apply →" : "Login to apply →"}
+</button>
+</div>
+))
+)}
+</div>
+</div>
+
+{applyModal && selectedJob && (
+<div className="apply-modal-overlay" onClick={handleCloseModal}>
+<div className="apply-modal" onClick={(e) => e.stopPropagation()}>
+<div className="modal-header">
+<h3>📋 Apply for {selectedJob.title}</h3>
+<span className="job-id">Job ID: #{selectedJob.id}</span>
+<button className="close-btn" onClick={handleCloseModal}>
+×
+</button>
+</div>
+<div className="modal-body">
+{applySuccess ? (
+<div className="success-message">
+<div style={{ fontSize: "48px", marginBottom: "1rem" }}>
+✅
+</div>
+<h3>You've successfully applied!</h3>
+<p className="success-job-title">{selectedJob.title}</p>
+<p style={{ color: "#6b7280" }}>
+We'll review your application soon!
+</p>
+</div>
+) : (
+<form onSubmit={handleSubmitApplication} className="apply-form">
+<div className="form-row">
+<div className="form-group">
+<label>Full Name *</label>
+<input
+type="text"
+name="fullName"
+value={formData.fullName || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+<div className="form-group">
+<label>Email *</label>
+<input
+type="email"
+name="email"
+value={formData.email || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+</div>
+<div className="form-row">
+<div className="form-group">
+<label>Phone *</label>
+<input
+type="tel"
+name="phone"
+value={formData.phone || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+<div className="form-group">
+<label>Location *</label>
+<input
+type="text"
+name="location"
+value={formData.location || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+</div>
+<div className="form-row">
+<div className="form-group">
+<label>College Name *</label>
+<input
+type="text"
+name="collegeName"
+value={formData.collegeName || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+<div className="form-group">
+<label>City *</label>
+<input
+type="text"
+name="city"
+value={formData.city || ""}
+onChange={handleFormChange}
+required
+/>
+</div>
+</div>
+<div className="form-row">
+<div className="form-group">
+<label>CGPA *</label>
+<input
+type="text"
+name="cgpa"
+value={formData.cgpa || ""}
+onChange={handleFormChange}
+placeholder="e.g. 8.5"
+required
+/>
+</div>
+<div className="form-group">
+<label>Current Company</label>
+<input
+type="text"
+name="currentCompany"
+value={formData.currentCompany || ""}
+onChange={handleFormChange}
+/>
+</div>
+</div>
+
+{!isInternship(selectedJob) && (
+<div className="form-row">
+<div className="form-group">
+<label>Current CTC</label>
+<input
+type="text"
+name="currentSalary"
+value={formData.currentSalary || ""}
+onChange={handleFormChange}
+placeholder="e.g. ₹8 LPA"
+/>
+</div>
+<div className="form-group">
+<label>Expected CTC *</label>
+<input
+type="text"
+name="expectedSalary"
+value={formData.expectedSalary || ""}
+onChange={handleFormChange}
+placeholder="e.g. ₹12 LPA"
+required
+/>
+</div>
+</div>
+)}
+
+{isInternship(selectedJob) && (
+<div
+style={{
+background: "#f0f9ff",
+border: "1px solid #0ea5e9",
+borderRadius: "8px",
+padding: "1rem",
+marginBottom: "1rem",
+fontSize: "14px",
+}}
+>
+💡 <strong>Internship Opportunity:</strong> No salary. Focus on gaining real project experience!
+</div>
+)}
+
+<div className="form-group">
+<label>Upload Resume * (PDF/DOC)</label>
+<input
+type="file"
+accept=".pdf,.doc,.docx"
+onChange={handleResumeChange}
+required
+/>
+{resumeFile && (
+<p
+style={{
+fontSize: "14px",
+color: "#6b7280",
+marginTop: "4px",
+}}
+>
+✅ {resumeFile.name}
+</p>
+)}
+</div>
+<button
+type="submit"
+disabled={applying || !resumeFile}
+className="apply-submit-btn"
+>
+{applying
+? "Applying..."
+: `Apply for ${selectedJob.title}`}
+</button>
+</form>
+)}
+</div>
+</div>
+</div>
+)}
+</section>
+);
 };
 
 
