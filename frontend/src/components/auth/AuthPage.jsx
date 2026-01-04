@@ -173,6 +173,7 @@ const AuthPage = () => {
     };
 
     login(userData, null);
+    const from = location.state?.from;
 
     // 👈 BAS YE 5 LINES!
    if (data.role === "ADMIN") {
