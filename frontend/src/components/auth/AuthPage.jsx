@@ -123,14 +123,14 @@ const handleLogin = async (e) => {
     } else {
       navigate("/", { replace: true });
     }
-
-  } catch (err) {
+  } catch (err) {  // ✅ Now properly inside try block
     console.error("Login error:", err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
+
 
 
   const handleRegister = async (e) => {
