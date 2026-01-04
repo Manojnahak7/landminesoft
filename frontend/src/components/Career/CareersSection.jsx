@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "../Career/CareersSection.css";
 // import { Link } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
-
+// import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 // const API_BASE = "http://localhost:7689";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -65,6 +65,7 @@ const perks = [
 const CareersSection = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [jobs, setJobs] = useState([]);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -82,14 +83,35 @@ const CareersSection = () => {
   }, []);
 
 
-//   useEffect(() => {
-//   // Track page visit
-//   fetch(`${API_BASE}/api/analytics/track-visit`, { 
-//     method: 'POST',
-//     credentials: 'include' 
-//   }).catch(console.error);
-// }, []);
+useEffect(() => {
+  if (!jobsLoading && user && location.state?.openJobId) {
+    const jobIdToOpen = location.state.openJobId;
+    const job = jobs.find((j) => j.id === jobIdToOpen);
 
+    if (job) {
+      // Same as normal apply (without login check)
+      setSelectedJob(job);
+      setFormData({
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        location: user.location || "",
+        collegeName: user.collegeName || "",
+        city: user.city || "",
+        cgpa: user.cgpa || "",
+        currentCompany: user.currentCompany || "",
+        currentSalary: user.currentSalary || "",
+        expectedSalary: "",
+      });
+      setApplyModal(true);
+
+      navigate("/careers", { replace: true });
+    }
+  }
+}, [jobsLoading, user, location.state, jobs, navigate]);
+
+
+  
   const fetchJobs = async () => {
     try {
       setJobsLoading(true);
