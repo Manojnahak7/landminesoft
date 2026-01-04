@@ -27,7 +27,7 @@ export const Nav = () => {
           {/* <Link to="/">
             <img src={logo} alt="Company Logo" />
           </Link> */}
-          <Link to="https://www.landminesoft.com/">
+          <Link to="/">
             <img src={logo} alt="Company Logo" />
           </Link>
         </div>
