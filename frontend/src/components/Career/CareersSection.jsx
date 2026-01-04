@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "../Career/CareersSection.css";
-// import { Link } from "react-router-dom";
-// import { Link, useNavigate } from "react-router-dom";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 // const API_BASE = "http://localhost:7689";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -89,7 +87,6 @@ useEffect(() => {
     const job = jobs.find((j) => j.id === jobIdToOpen);
 
     if (job) {
-      // Same as normal apply (without login check)
       setSelectedJob(job);
       setFormData({
         fullName: user.fullName || "",
@@ -149,7 +146,6 @@ useEffect(() => {
     });
   };
 
-  // 🔥 CHECK IF JOB IS INTERNSHIP (salary === "0")
   const isInternship = (job) => {
     return job.salary === "0" || job.salary === 0 || !job.salary;
   };
@@ -319,12 +315,7 @@ useEffect(() => {
             {error}
           </p>
         )}
-        /* {!user && (
-          <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
-            👤 <Link to="/auth">Login</Link> to apply for jobs
-          </p>
-        )}
-      </div> */
+      
       {!user && (
   <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
     👤 
