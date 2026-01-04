@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+// import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import "../auth/AuthPage.css";
 import { useAuth } from "../../context/AuthContext";
 
@@ -9,6 +10,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const AuthPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState({
@@ -139,9 +141,27 @@ const AuthPage = () => {
 
       login(userData, null); // Backend JWT token nahi bhej raha
 
+      // if (data.role === "ADMIN") {
+      //   alert("👑 Welcome Admin!");
+      //   navigate("/admin", { replace: true });
+      // } else {
+      //   navigate("/", { replace: true });
+      // }
+      const from = location.state?.from;
+      const jobId = location.state?.jobId;
+
       if (data.role === "ADMIN") {
         alert("👑 Welcome Admin!");
         navigate("/admin", { replace: true });
+      } else if (from === "/careers" && jobId) {
+        // Careers se specific job ke through aya tha
+        navigate("/careers", {
+          replace: true,
+          state: { openJobId: jobId },
+        });
+      } else if (from === "/careers") {
+        // Normal careers login link se aya tha
+        navigate("/careers", { replace: true });
       } else {
         navigate("/", { replace: true });
       }
