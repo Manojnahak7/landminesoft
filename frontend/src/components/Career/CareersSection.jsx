@@ -8,47 +8,42 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const fallbackRoles = [
   {
     id: 1,
-    title: "Junior Full‑Stack Developer",
-    type: "Full‑time · On‑site / Hybrid",
+    title: "Junior Full-Stack Developer", // ‑ हटाया
+    type: "Full-time On-site / Hybrid",    // ‑ हटाया
     location: "Hyderabad, India",
-    salary: "₹6-12 LPA",
+    salary: "Rs6-12 LPA",
     experience: "0-2 Years",
-    summary:
-      "Work with our core team on AI‑driven web apps using React, Spring Boot, and cloud‑native APIs.",
+    summary: "Work with our core team on AI-driven web apps using React, Spring Boot, and cloud-native APIs.", // ‑ हटाया
     createdAt: "2025-12-20T10:30:00Z",
   },
   {
     id: 2,
     title: "AI / ML Engineer",
-    type: "Full‑time · Remote Friendly",
+    type: "Full-time Remote Friendly",     // ‑ हटाया
     location: "Hyderabad / Remote",
-    salary: "₹15-25 LPA",
+    salary: "Rs15-25 LPA",
     experience: "2-5 Years",
-    summary:
-      "Build and deploy ML models, RAG pipelines, and LLM integrations for real client projects.",
+    summary: "Build and deploy ML models, RAG pipelines, and LLM integrations for real client projects.",
     createdAt: "2025-12-22T14:15:00Z",
   },
   {
     id: 3,
     title: "Backend Developer (Java)",
-    type: "Full‑time",
+    type: "Full-time",                     // ‑ हटाया
     location: "Hyderabad, India",
-    salary: "₹10-18 LPA",
+    salary: "Rs10-18 LPA",
     experience: "1-4 Years",
-    summary:
-      "Design secure, scalable backend services, REST APIs, and data layers for our platforms.",
+    summary: "Design secure, scalable backend services, REST APIs, and data layers for our platforms.",
     createdAt: "2025-12-23T09:45:00Z",
   },
-  // 🔥 INTERNSHIP JOB - salary: "0"
   {
     id: 4,
     title: "Software Engineering Intern",
-    type: "Internship · Full‑time",
+    type: "Internship Full-time",          // ‑ हटाया
     location: "Hyderabad, India",
-    salary: "0", // 🔥 0 salary = internship/unpaid
+    salary: "0",
     experience: "0-1 Years",
-    summary:
-      "Hands-on experience building real web apps with React + Spring Boot. Perfect for freshers!",
+    summary: "Hands-on experience building real web apps with React + Spring Boot. Perfect for freshers!",
     createdAt: "2025-12-25T09:00:00Z",
   },
 ];
