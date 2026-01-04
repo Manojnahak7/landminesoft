@@ -75,35 +75,31 @@ const CareersSection = () => {
     fetchJobs();
   }, []);
 
+  useEffect(() => {
+    if (!jobsLoading && user && location.state?.openJobId) {
+      const jobIdToOpen = location.state.openJobId;
+      const job = jobs.find((j) => j.id === jobIdToOpen);
 
-useEffect(() => {
-  if (!jobsLoading && user && location.state?.openJobId) {
-    const jobIdToOpen = location.state.openJobId;
-    const job = jobs.find((j) => j.id === jobIdToOpen);
-
-    if (job) {
-      setSelectedJob(job);
-      setFormData({
-        fullName: user.fullName || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        location: user.location || "",
-        collegeName: user.collegeName || "",
-        city: user.city || "",
-        cgpa: user.cgpa || "",
-        currentCompany: user.currentCompany || "",
-        currentSalary: user.currentSalary || "",
-        expectedSalary: "",
-      });
-      setApplyModal(true);
-
-      navigate("/careers", { replace: true });
+      if (job) {
+        setSelectedJob(job);
+        setFormData({
+          fullName: user.fullName || "",
+          email: user.email || "",
+          phone: user.phone || "",
+          location: user.location || "",
+          collegeName: user.collegeName || "",
+          city: user.city || "",
+          cgpa: user.cgpa || "",
+          currentCompany: user.currentCompany || "",
+          currentSalary: user.currentSalary || "",
+          expectedSalary: "",
+        });
+        setApplyModal(true);
+        navigate("/careers", { replace: true });
+      }
     }
-  }
-}, [jobsLoading, user, location.state, jobs, navigate]);
+  }, [jobsLoading, user, location.state, jobs, navigate]);
 
-
-  
   const fetchJobs = async () => {
     try {
       setJobsLoading(true);
@@ -145,36 +141,32 @@ useEffect(() => {
     return job.salary === "0" || job.salary === 0 || !job.salary;
   };
 
-  
   const handleApply = async (job) => {
-  if (!user) {
-    navigate("/auth", {
-      state: {
-        from: "/careers",
-        jobId: job.id,
-      },
+    if (!user) {
+      navigate("/auth", {
+        state: {
+          from: "/careers",
+          jobId: job.id,
+        },
+      });
+      return;
+    }
+
+    setSelectedJob(job);
+    setFormData({
+      fullName: user.fullName || "",
+      email: user.email || "",
+      phone: user.phone || "",
+      location: user.location || "",
+      collegeName: user.collegeName || "",
+      city: user.city || "",
+      cgpa: user.cgpa || "",
+      currentCompany: user.currentCompany || "",
+      currentSalary: user.currentSalary || "",
+      expectedSalary: "",
     });
-    return;
-  }
-
-  setSelectedJob(job);
-
-  setFormData({
-    fullName: user.fullName || "",
-    email: user.email || "",
-    phone: user.phone || "",
-    location: user.location || "",
-    collegeName: user.collegeName || "",
-    city: user.city || "",
-    cgpa: user.cgpa || "",
-    currentCompany: user.currentCompany || "",
-    currentSalary: user.currentSalary || "",
-    expectedSalary: "",
-  });
-
-  setApplyModal(true);
-};
-
+    setApplyModal(true);
+  };
 
   const handleResumeChange = (e) => {
     setResumeFile(e.target.files[0]);
@@ -199,8 +191,6 @@ useEffect(() => {
       return;
     }
 
-    // console.log("👤 USER:", user);
-    // console.log("📧 EMAIL:", user.email);
     setApplying(true);
 
     try {
@@ -208,40 +198,27 @@ useEffect(() => {
       formDataToSend.append("jobId", selectedJob.id.toString());
       formDataToSend.append("resume", resumeFile);
       formDataToSend.append("fullName", formData.fullName);
-      formDataToSend.append("email", formData.email); // ✅ Backend validates this
+      formDataToSend.append("email", formData.email);
       formDataToSend.append("phone", formData.phone);
       formDataToSend.append("location", formData.location);
       formDataToSend.append("collegeName", formData.collegeName);
       formDataToSend.append("city", formData.city);
       formDataToSend.append("cgpa", formData.cgpa);
       formDataToSend.append("currentCompany", formData.currentCompany || "");
-
-      // 🔥 ONLY ADD SALARY FIELDS IF NOT INTERNSHIP
-      // if (!isInternship(selectedJob)) {
-      //   formDataToSend.append("currentSalary", formData.currentSalary || "");
-      //   formDataToSend.append("expectedSalary", formData.expectedSalary);
-
-      // }
       formDataToSend.append("currentSalary", formData.currentSalary || "");
       formDataToSend.append("expectedSalary", formData.expectedSalary || "");
 
-      // console.log("📤 Submitting Job ID:", selectedJob.id);
-      // console.log("🎯 Is Internship?", isInternship(selectedJob));
-
-      // 🔥 CRITICAL: NO Authorization header with FormData (CORS fix)
       const res = await fetch(`${API_BASE}/api/auth/jobs/apply`, {
         method: "POST",
-        body: formDataToSend, // ✅ NO HEADERS - Let browser handle multipart
+        body: formDataToSend,
       });
 
       const data = await res.json();
-      // console.log("📥 Response:", res.status, data);
 
       if (!res.ok) {
         throw new Error(data.message || `HTTP ${res.status}`);
       }
 
-      // console.log("✅ Application submitted successfully!");
       setApplySuccess(true);
 
       setTimeout(() => {
@@ -271,298 +248,296 @@ useEffect(() => {
       <div style={{ padding: "2rem", textAlign: "center" }}>🔄 Loading...</div>
     );
 
- return (
-<section className="careers">
-<div className="careers-header">
-<p className="careers-eyebrow">CAREERS</p>
-<h2 className="careers-title">Build the future with Landmine Soft</h2>
-<p className="careers-subtitle">
-Join a small, focused engineering team working on AI‑powered products,
-modern web platforms, and cloud solutions for global clients.
-</p>
-{error && (
-<p style={{ color: "#ef4444", fontSize: "14px", marginTop: "10px" }}>
-{error}
-</p>
-)}
+  return (
+    <section className="careers">
+      <div className="careers-header">
+        <p className="careers-eyebrow">CAREERS</p>
+        <h2 className="careers-title">Build the future with Landmine Soft</h2>
+        <p className="careers-subtitle">
+          Join a small, focused engineering team working on AI-powered products,
+          modern web platforms, and cloud solutions for global clients.
+        </p>
+        {error && (
+          <p style={{ color: "#ef4444", fontSize: "14px", marginTop: "10px" }}>
+            {error}
+          </p>
+        )}
 
-{!user && (
-<p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
-👤
-<button
-type="button"
-style={{
-border: "none",
-background: "none",
-color: "#3b82f6",
-cursor: "pointer",
-textDecoration: "underline",
-padding: 0,
-marginLeft: "4px",
-}}
-onClick={() =>
-navigate("/auth", {
-state: { from: "/careers" }, 
-})
-}
->
-Login
-</button>{" "}
-to apply for jobs
-</p>
-)}
+        {!user && (
+          <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
+            👤
+            <button
+              type="button"
+              style={{
+                border: "none",
+                background: "none",
+                color: "#3b82f6",
+                cursor: "pointer",
+                textDecoration: "underline",
+                padding: 0,
+                marginLeft: "4px",
+              }}
+              onClick={() =>
+                navigate("/auth", {
+                  state: { from: "/careers" }, 
+                })
+              }
+            >
+              Login
+            </button>{" "}
+            to apply for jobs
+          </p>
+        )}
 
+        <div className="careers-layout">
+          <div className="careers-left">
+            <h3 className="careers-left-title">Why work with us?</h3>
+            <ul className="careers-perks">
+              {perks.map((perk) => (
+                <li key={perk}>{perk}</li>
+              ))}
+            </ul>
+            <p className="careers-note">
+              Don't see the right role? Send your CV to{" "}
+              <span>careers@landminesoft.com</span>
+            </p>
+          </div>
 
-<div className="careers-layout">
-<div className="careers-left">
-<h3 className="careers-left-title">Why work with us?</h3>
-<ul className="careers-perks">
-{perks.map((perk) => (
-<li key={perk}>{perk}</li>
-))}
-</ul>
-<p className="careers-note">
-Don't see the right role? Send your CV to{" "}
-<span>careers@landminesoft.com</span>
-</p>
-</div>
+          <div className="careers-right">
+            {jobsLoading ? (
+              <div style={{ fontSize: "18px", margin: "2rem 0" }}>
+                🔄 Loading jobs...
+              </div>
+            ) : jobs.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "2rem" }}>
+                <div style={{ fontSize: "48px", marginBottom: "1rem" }}>📭</div>
+                <h3>No jobs available</h3>
+              </div>
+            ) : (
+              jobs.map((role) => (
+                <div key={role.id || role.title} className="career-card">
+                  <div className="career-card-top">
+                    <h3 className="career-role">{role.title}</h3>
+                    <p className="career-type">{role.type}</p>
+                  </div>
+                  <p className="career-location">{role.location}</p>
 
-<div className="careers-right">
-{jobsLoading ? (
-<div style={{ fontSize: "18px", margin: "2rem 0" }}>
-🔄 Loading jobs...
-</div>
-) : jobs.length === 0 ? (
-<div style={{ textAlign: "center", padding: "2rem" }}>
-<div style={{ fontSize: "48px", marginBottom: "1rem" }}>📭</div>
-<h3>No jobs available</h3>
-</div>
-) : (
-jobs.map((role) => (
-<div key={role.id || role.title} className="career-card">
-<div className="career-card-top">
-<h3 className="career-role">{role.title}</h3>
-<p className="career-type">{role.type}</p>
-</div>
-<p className="career-location">{role.location}</p>
+                  <div className="career-meta">
+                    <span className="career-salary">💰 {role.salary}</span>
+                    <span className="career-experience">
+                      📈 {role.experience}
+                    </span>
+                    <span className="career-posted">
+                      📅 {timeAgo(role.createdAt)}
+                    </span>
+                  </div>
 
-<div className="career-meta">
-<span className="career-salary">💰 {role.salary}</span>
-<span className="career-experience">
-📈 {role.experience}
-</span>
-<span className="career-posted">
-📅 {timeAgo(role.createdAt)}
-</span>
-</div>
+                  <p className="career-summary">{role.summary}</p>
+                  <button
+                    className="career-cta"
+                    onClick={() => handleApply(role)}
+                    disabled={!user}
+                    style={{ opacity: user ? 1 : 0.6 }}
+                  >
+                    {user ? "View details & apply →" : "Login to apply →"}
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
 
-<p className="career-summary">{role.summary}</p>
-<button
-className="career-cta"
-onClick={() => handleApply(role)}
-disabled={!user}
-style={{ opacity: user ? 1 : 0.6 }}
->
-{user ? "View details & apply →" : "Login to apply →"}
-</button>
-</div>
-))
-)}
-</div>
-</div>
+        {applyModal && selectedJob && (
+          <div className="apply-modal-overlay" onClick={handleCloseModal}>
+            <div className="apply-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>📋 Apply for {selectedJob.title}</h3>
+                <span className="job-id">Job ID: #{selectedJob.id}</span>
+                <button className="close-btn" onClick={handleCloseModal}>
+                  ×
+                </button>
+              </div>
+              <div className="modal-body">
+                {applySuccess ? (
+                  <div className="success-message">
+                    <div style={{ fontSize: "48px", marginBottom: "1rem" }}>
+                      ✅
+                    </div>
+                    <h3>You've successfully applied!</h3>
+                    <p className="success-job-title">{selectedJob.title}</p>
+                    <p style={{ color: "#6b7280" }}>
+                      We'll review your application soon!
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmitApplication} className="apply-form">
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Full Name *</label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Email *</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Phone *</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Location *</label>
+                        <input
+                          type="text"
+                          name="location"
+                          value={formData.location || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>College Name *</label>
+                        <input
+                          type="text"
+                          name="collegeName"
+                          value={formData.collegeName || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>City *</label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city || ""}
+                          onChange={handleFormChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>CGPA *</label>
+                        <input
+                          type="text"
+                          name="cgpa"
+                          value={formData.cgpa || ""}
+                          onChange={handleFormChange}
+                          placeholder="e.g. 8.5"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Current Company</label>
+                        <input
+                          type="text"
+                          name="currentCompany"
+                          value={formData.currentCompany || ""}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
 
-{applyModal && selectedJob && (
-<div className="apply-modal-overlay" onClick={handleCloseModal}>
-<div className="apply-modal" onClick={(e) => e.stopPropagation()}>
-<div className="modal-header">
-<h3>📋 Apply for {selectedJob.title}</h3>
-<span className="job-id">Job ID: #{selectedJob.id}</span>
-<button className="close-btn" onClick={handleCloseModal}>
-×
-</button>
-</div>
-<div className="modal-body">
-{applySuccess ? (
-<div className="success-message">
-<div style={{ fontSize: "48px", marginBottom: "1rem" }}>
-✅
-</div>
-<h3>You've successfully applied!</h3>
-<p className="success-job-title">{selectedJob.title}</p>
-<p style={{ color: "#6b7280" }}>
-We'll review your application soon!
-</p>
-</div>
-) : (
-<form onSubmit={handleSubmitApplication} className="apply-form">
-<div className="form-row">
-<div className="form-group">
-<label>Full Name *</label>
-<input
-type="text"
-name="fullName"
-value={formData.fullName || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-<div className="form-group">
-<label>Email *</label>
-<input
-type="email"
-name="email"
-value={formData.email || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-</div>
-<div className="form-row">
-<div className="form-group">
-<label>Phone *</label>
-<input
-type="tel"
-name="phone"
-value={formData.phone || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-<div className="form-group">
-<label>Location *</label>
-<input
-type="text"
-name="location"
-value={formData.location || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-</div>
-<div className="form-row">
-<div className="form-group">
-<label>College Name *</label>
-<input
-type="text"
-name="collegeName"
-value={formData.collegeName || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-<div className="form-group">
-<label>City *</label>
-<input
-type="text"
-name="city"
-value={formData.city || ""}
-onChange={handleFormChange}
-required
-/>
-</div>
-</div>
-<div className="form-row">
-<div className="form-group">
-<label>CGPA *</label>
-<input
-type="text"
-name="cgpa"
-value={formData.cgpa || ""}
-onChange={handleFormChange}
-placeholder="e.g. 8.5"
-required
-/>
-</div>
-<div className="form-group">
-<label>Current Company</label>
-<input
-type="text"
-name="currentCompany"
-value={formData.currentCompany || ""}
-onChange={handleFormChange}
-/>
-</div>
-</div>
+                    {!isInternship(selectedJob) && (
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Current CTC</label>
+                          <input
+                            type="text"
+                            name="currentSalary"
+                            value={formData.currentSalary || ""}
+                            onChange={handleFormChange}
+                            placeholder="e.g. Rs8 LPA"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Expected CTC *</label>
+                          <input
+                            type="text"
+                            name="expectedSalary"
+                            value={formData.expectedSalary || ""}
+                            onChange={handleFormChange}
+                            placeholder="e.g. Rs12 LPA"
+                            required
+                          />
+                        </div>
+                      </div>
+                    )}
 
-{!isInternship(selectedJob) && (
-<div className="form-row">
-<div className="form-group">
-<label>Current CTC</label>
-<input
-type="text"
-name="currentSalary"
-value={formData.currentSalary || ""}
-onChange={handleFormChange}
-placeholder="e.g. ₹8 LPA"
-/>
-</div>
-<div className="form-group">
-<label>Expected CTC *</label>
-<input
-type="text"
-name="expectedSalary"
-value={formData.expectedSalary || ""}
-onChange={handleFormChange}
-placeholder="e.g. ₹12 LPA"
-required
-/>
-</div>
-</div>
-)}
+                    {isInternship(selectedJob) && (
+                      <div
+                        style={{
+                          background: "#f0f9ff",
+                          border: "1px solid #0ea5e9",
+                          borderRadius: "8px",
+                          padding: "1rem",
+                          marginBottom: "1rem",
+                          fontSize: "14px",
+                        }}
+                      >
+                        💡 <strong>Internship Opportunity:</strong> No salary. Focus on gaining real project experience!
+                      </div>
+                    )}
 
-{isInternship(selectedJob) && (
-<div
-style={{
-background: "#f0f9ff",
-border: "1px solid #0ea5e9",
-borderRadius: "8px",
-padding: "1rem",
-marginBottom: "1rem",
-fontSize: "14px",
-}}
->
-💡 <strong>Internship Opportunity:</strong> No salary. Focus on gaining real project experience!
-</div>
-)}
-
-<div className="form-group">
-<label>Upload Resume * (PDF/DOC)</label>
-<input
-type="file"
-accept=".pdf,.doc,.docx"
-onChange={handleResumeChange}
-required
-/>
-{resumeFile && (
-<p
-style={{
-fontSize: "14px",
-color: "#6b7280",
-marginTop: "4px",
-}}
->
-✅ {resumeFile.name}
-</p>
-)}
-</div>
-<button
-type="submit"
-disabled={applying || !resumeFile}
-className="apply-submit-btn"
->
-{applying
-? "Applying..."
-: `Apply for ${selectedJob.title}`}
-</button>
-</form>
-)}
-</div>
-</div>
-{/* </div> */}
-)}
-</section>
-);
-};
-
+                    <div className="form-group">
+                      <label>Upload Resume * (PDF/DOC)</label>
+                      <input
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={handleResumeChange}
+                        required
+                      />
+                      {resumeFile && (
+                        <p
+                          style={{
+                            fontSize: "14px",
+                            color: "#6b7280",
+                            marginTop: "4px",
+                          }}
+                        >
+                          ✅ {resumeFile.name}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={applying || !resumeFile}
+                      className="apply-submit-btn"
+                    >
+                      {applying
+                        ? "Applying..."
+                        : `Apply for ${selectedJob.title}`}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+    );
+  };
 
 export default CareersSection;
