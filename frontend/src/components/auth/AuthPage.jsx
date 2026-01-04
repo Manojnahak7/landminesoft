@@ -65,71 +65,73 @@ const AuthPage = () => {
     return null;
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const res = await fetch(`${API_BASE}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: form.email.trim(),
-          password: form.password,
-        }),
-      });
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: form.email.trim(),
+        password: form.password,
+      }),
+    });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Invalid email or password");
-      }
-
-      const data = await res.json();
-
-      const userData = {
-        id: data.userId,
-        fullName: data.fullName,
-        email: data.email,
-        location: data.location || "",
-        city: data.city || "",
-        pincode: data.pincode || "",
-        phone: data.phone || "",
-        collegeName: data.collegeName || "",
-        degree: data.degree || "",
-        yearOfPassing: data.yearOfPassing || "",
-        cgpa: data.cgpa || "",
-        currentCompany: data.currentCompany || "",
-        currentPosition: data.currentPosition || "",
-        currentSalary: data.currentSalary || "",
-        role: data.role || "USER",
-      };
-
-      login(userData, null);
-
-      const from = location.state?.from;
-      const jobId = location.state?.jobId;
-
-      if (data.role === "ADMIN") {
-        alert("👑 Welcome Admin!");
-        navigate("/admin", { replace: true });
-      } else if (from === "/careers" && jobId) {
-        navigate("/careers", {
-          replace: true,
-          state: { openJobId: jobId }
-        });
-      } else if (from === "/careers") {
-        navigate("/careers", { replace: true });
-      } else {
-        navigate("/", { replace: true });
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.message || "Invalid email or password");
     }
-  };
+
+    const data = await res.json();
+
+    const userData = {
+      id: data.userId,
+      fullName: data.fullName,
+      email: data.email,
+      location: data.location || "",
+      city: data.city || "",
+      pincode: data.pincode || "",
+      phone: data.phone || "",
+      collegeName: data.collegeName || "",
+      degree: data.degree || "",
+      yearOfPassing: data.yearOfPassing || "",
+      cgpa: data.cgpa || "",
+      currentCompany: data.currentCompany || "",
+      currentPosition: data.currentPosition || "",
+      currentSalary: data.currentSalary || "",
+      role: data.role || "USER",
+    };
+
+    login(userData, null);
+
+    const from = location.state?.from;
+    const jobId = location.state?.jobId;
+
+    if (data.role === "ADMIN") {
+      alert("👑 Welcome Admin!");
+      navigate("/admin", { replace: true });
+    } else if (from === "/careers" && jobId) {
+      navigate("/careers", {
+        replace: true,
+        state: { openJobId: jobId },
+      });
+    } else if (from === "/careers") {
+      navigate("/careers", { replace: true });
+    } else {
+      navigate("/", { replace: true });
+    }
+
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
