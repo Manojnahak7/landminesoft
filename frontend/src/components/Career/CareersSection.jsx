@@ -269,7 +269,7 @@ const CareersSection = () => {
         )}
         {!user && (
           <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
-            👤 <Link to="/auth">Login</Link> to apply for jobs
+            👤 <Link to="/auth"  state={{ from: "/careers" }}>Login</Link> to apply for jobs
           </p>
         )}
       </div>
