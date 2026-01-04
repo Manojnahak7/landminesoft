@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-// import { useNavigate, useSearchParams } from "react-router-dom";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import "../auth/AuthPage.css";
 import { useAuth } from "../../context/AuthContext";
 
-// const API_BASE = "http://localhost:7689";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const AuthPage = () => {
@@ -32,39 +30,12 @@ const AuthPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const [success, setSuccess] = useState("");
-
-  // 🔥 Auto detect reset token
-  // useEffect(() => {
-  //   const token = searchParams.get("token");
-  //   if (token) {
-  //     setMode("reset-password-confirm");
-  //     console.log("🔑 Reset token detected");
-  //   }
-  // }, [searchParams]);
-
-  // // 🔥 AuthPage.jsx ke useEffect ko replace kar
-  // useEffect(() => {
-  //   const token = searchParams.get("token");
-  //   console.log("🔍 URL:", window.location.pathname, "Token:", token); // DEBUG
-
-  //   if (token) {
-  //     if (window.location.pathname.includes("reset-password")) {
-  //       setMode("reset-password-confirm");
-  //       console.log("✅ Reset form mode set!");
-  //     }
-  //   }
-  // }, [searchParams]);
 
   useEffect(() => {
     const token = searchParams.get("token");
-    // console.log("🔍 URL:", window.location.pathname, "Token:", token);
-
     if (token) {
-      // 🔥 ANY PATH pe token detect kar (auth OR reset-password)
       setMode("reset-password-confirm");
-      // console.log("✅ Reset form activated!");
     }
   }, [searchParams]);
 
@@ -72,7 +43,6 @@ const AuthPage = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // 🔥 VALIDATE REQUIRED FIELDS
   const validateRequiredFields = () => {
     const required = {
       fullName: form.fullName,
@@ -96,7 +66,6 @@ const AuthPage = () => {
     return null;
   };
 
-  // 🔥 FIXED LOGIN
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -118,9 +87,7 @@ const AuthPage = () => {
       }
 
       const data = await res.json();
-      // console.log("🔍 LOGIN SUCCESS:", data);
 
-      // 🔥 PASS USER DATA to AuthContext
       const userData = {
         id: data.userId,
         fullName: data.fullName,
@@ -139,32 +106,26 @@ const AuthPage = () => {
         role: data.role || "USER",
       };
 
-      login(userData, null); // Backend JWT token nahi bhej raha
+      login(userData, null);
 
-      // if (data.role === "ADMIN") {
-      //   alert("👑 Welcome Admin!");
-      //   navigate("/admin", { replace: true });
-      // } else {
-      //   navigate("/", { replace: true });
-      // }
-      // handleLogin() me ye part (line ~150):
-const from = location.state?.from;
-const jobId = location.state?.jobId;
+      const from = location.state?.from;
+      const jobId = location.state?.jobId;
 
-if (data.role === "ADMIN") {
-  navigate("/admin", { replace: true });
-} else if (from === "/careers" && jobId) {
-  // 🔥 EXACT JOB MODAL OPEN
-  navigate("/careers", {
-    replace: true,
-    state: { openJobId: jobId }
-  });
-} else if (from === "/careers") {
-  navigate("/careers", { replace: true });
-} else {
-  navigate("/", { replace: true });
-}
- catch (err) {
+      if (data.role === "ADMIN") {
+        alert("👑 Welcome Admin!");
+        navigate("/admin", { replace: true });
+      } else if (from === "/careers" && jobId) {
+        // 🔥 EXACT JOB MODAL OPEN
+        navigate("/careers", {
+          replace: true,
+          state: { openJobId: jobId }
+        });
+      } else if (from === "/careers") {
+        navigate("/careers", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
       console.error("Login error:", err);
       setError(err.message);
     } finally {
@@ -172,16 +133,11 @@ if (data.role === "ADMIN") {
     }
   };
 
-  
-
-
-  // 🔥 FIXED REGISTER - All 14 fields + validation
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // ✅ VALIDATE ALL REQUIRED FIELDS
     const missingField = validateRequiredFields();
     if (missingField) {
       setError(
@@ -217,18 +173,13 @@ if (data.role === "ADMIN") {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        console.error("Register error:", data);
         throw new Error(data.message || "Registration failed");
       }
 
       const data = await res.json();
-      // console.log("✅ REGISTER SUCCESS:", data);
-      // alert("✅ Registered successfully! You can now log in.");
-      // setMode("login");
       setSuccess("✅ Account created successfully!");
       setMode("login");
 
-      // Clear form but keep email for convenience
       setForm({
         ...form,
         fullName: "",
@@ -272,7 +223,6 @@ if (data.role === "ADMIN") {
       }
 
       const data = await res.json();
-      // alert(data.message || "✅ Reset link sent to your email!");
       setSuccess(data.message || "✅ Reset link sent to your email!");
     } catch (err) {
       setError(err.message);
@@ -304,8 +254,6 @@ if (data.role === "ADMIN") {
         throw new Error(data.error || "Reset failed");
       }
 
-      // alert("✅ Password reset successfully! You can now log in.");
-      // setMode("login");
       setSuccess("✅ Password reset successfully! You can now log in.");
       setMode("login");
       setForm({ ...form, password: "", confirmPassword: "" });
@@ -341,10 +289,6 @@ if (data.role === "ADMIN") {
         </div>
 
         {success && <div className="auth-success">{success}</div>}
-
-        {/* 🔥 Error Message */}
-        {/* {error && <div className="auth-error">{error}</div>} */}
-
         {error && <div className="auth-error">{error}</div>}
 
         {mode === "login" ? (
@@ -389,162 +333,70 @@ if (data.role === "ADMIN") {
             </p>
           </form>
         ) : mode === "register" ? (
-          <form
-            onSubmit={handleRegister}
-            className="auth-form auth-register-grid"
-          >
-            {/* LEFT COLUMN */}
+          <form onSubmit={handleRegister} className="auth-form auth-register-grid">
             <div>
               <label>
                 Full name <span className="required">*</span>
-                <input
-                  name="fullName"
-                  value={form.fullName}
-                  onChange={handleChange}
-                  required
-                />
+                <input name="fullName" value={form.fullName} onChange={handleChange} required />
               </label>
               <label>
                 Email <span className="required">*</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="email" name="email" value={form.email} onChange={handleChange} required />
               </label>
               <label>
                 Password <span className="required">*</span>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="password" name="password" value={form.password} onChange={handleChange} required />
               </label>
               <label>
                 Phone <span className="required">*</span>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
               </label>
               <label>
                 Location <span className="required">*</span>
-                <input
-                  name="location"
-                  value={form.location}
-                  onChange={handleChange}
-                  placeholder="e.g. Telangana"
-                  required
-                />
+                <input name="location" value={form.location} onChange={handleChange} placeholder="e.g. Telangana" required />
               </label>
             </div>
-
-            {/* RIGHT COLUMN */}
             <div>
               <label>
                 College <span className="required">*</span>
-                <input
-                  name="collegeName"
-                  value={form.collegeName}
-                  onChange={handleChange}
-                  required
-                />
+                <input name="collegeName" value={form.collegeName} onChange={handleChange} required />
               </label>
               <label>
                 Degree <span className="required">*</span>
-                <input
-                  name="degree"
-                  value={form.degree}
-                  onChange={handleChange}
-                  placeholder="e.g. B.Tech"
-                  required
-                />
+                <input name="degree" value={form.degree} onChange={handleChange} placeholder="e.g. B.Tech" required />
               </label>
               <label>
                 Year of Passing <span className="required">*</span>
-                <input
-                  name="yearOfPassing"
-                  value={form.yearOfPassing}
-                  onChange={handleChange}
-                  placeholder="e.g. 2023"
-                  required
-                />
+                <input name="yearOfPassing" value={form.yearOfPassing} onChange={handleChange} placeholder="e.g. 2023" required />
               </label>
               <label>
                 CGPA <span className="required">*</span>
-                <input
-                  name="cgpa"
-                  value={form.cgpa}
-                  onChange={handleChange}
-                  placeholder="e.g. 8.5"
-                  required
-                />
+                <input name="cgpa" value={form.cgpa} onChange={handleChange} placeholder="e.g. 8.5" required />
               </label>
               <label>
                 City <span className="required">*</span>
-                <input
-                  name="city"
-                  value={form.city}
-                  onChange={handleChange}
-                  placeholder="e.g. Hyderabad"
-                  required
-                />
+                <input name="city" value={form.city} onChange={handleChange} placeholder="e.g. Hyderabad" required />
               </label>
               <label>
                 Pincode <span className="required">*</span>
-                <input
-                  name="pincode"
-                  value={form.pincode}
-                  onChange={handleChange}
-                  placeholder="e.g. 500001"
-                  required
-                />
+                <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="e.g. 500001" required />
               </label>
             </div>
-
-            {/* OPTIONAL WORK FIELDS */}
             <div className="work-fields">
               <label>
                 Current Company (Optional)
-                <input
-                  name="currentCompany"
-                  value={form.currentCompany}
-                  onChange={handleChange}
-                  placeholder="e.g. TalVoy Partners"
-                />
+                <input name="currentCompany" value={form.currentCompany} onChange={handleChange} placeholder="e.g. TalVoy Partners" />
               </label>
               <label>
                 Current Position (Optional)
-                <input
-                  name="currentPosition"
-                  value={form.currentPosition}
-                  onChange={handleChange}
-                  placeholder="e.g. Developer"
-                />
+                <input name="currentPosition" value={form.currentPosition} onChange={handleChange} placeholder="e.g. Developer" />
               </label>
               <label>
                 Current Salary (Optional)
-                <input
-                  name="currentSalary"
-                  value={form.currentSalary}
-                  onChange={handleChange}
-                  placeholder="e.g. 5 LPA"
-                />
+                <input name="currentSalary" value={form.currentSalary} onChange={handleChange} placeholder="e.g. 5 LPA" />
               </label>
             </div>
-
-            <button
-              type="submit"
-              className="auth-primary-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Creating Account..." : "Create Account"}
             </button>
             <p className="auth-switch">
@@ -558,19 +410,9 @@ if (data.role === "ADMIN") {
           <form onSubmit={handleResetPassword} className="auth-form">
             <label>
               Email <span className="required">*</span>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
+              <input type="email" name="email" value={form.email} onChange={handleChange} required />
             </label>
-            <button
-              type="submit"
-              className="auth-primary-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Sending..." : "Send Reset Link"}
             </button>
             <p className="auth-switch">
@@ -583,30 +425,13 @@ if (data.role === "ADMIN") {
           <form onSubmit={handleResetPasswordConfirm} className="auth-form">
             <label>
               New Password <span className="required">*</span>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-                autoFocus
-              />
+              <input type="password" name="password" value={form.password} onChange={handleChange} required autoFocus />
             </label>
             <label>
               Confirm Password <span className="required">*</span>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                required
-              />
+              <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
             </label>
-            <button
-              type="submit"
-              className="auth-primary-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-primary-btn" disabled={loading}>
               {loading ? "Resetting..." : "Reset Password"}
             </button>
             <p className="auth-switch">
