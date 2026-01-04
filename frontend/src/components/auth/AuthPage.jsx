@@ -175,12 +175,14 @@ const AuthPage = () => {
     login(userData, null);
 
     // 👈 BAS YE 5 LINES!
-    if (data.role === "ADMIN") {
-      alert("👑 Welcome Admin!");
-      navigate("/admin", { replace: true });
-    } else {
-      navigate("/careers", { replace: true });  // 👈 HAR BAR CAREERS!
-    }
+   if (data.role === "ADMIN") {
+    alert("👑 Welcome Admin!");
+    navigate("/admin", { replace: true });
+  } else if (from === "/careers") {
+    navigate("/careers", { replace: true });
+  } else {
+    navigate("/", { replace: true });
+  }
 
   } catch (err) {
     console.error("Login error:", err);
