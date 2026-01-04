@@ -147,25 +147,24 @@ const AuthPage = () => {
       // } else {
       //   navigate("/", { replace: true });
       // }
-      const from = location.state?.from;
-      const jobId = location.state?.jobId;
+      // handleLogin() me ye part (line ~150):
+const from = location.state?.from;
+const jobId = location.state?.jobId;
 
-      if (data.role === "ADMIN") {
-        alert("👑 Welcome Admin!");
-        navigate("/admin", { replace: true });
-      } else if (from === "/careers" && jobId) {
-        // Careers se specific job ke through aya tha
-        navigate("/careers", {
-          replace: true,
-          state: { openJobId: jobId },
-        });
-      } else if (from === "/careers") {
-        // Normal careers login link se aya tha
-        navigate("/careers", { replace: true });
-      } else {
-        navigate("/", { replace: true });
-      }
-    } catch (err) {
+if (data.role === "ADMIN") {
+  navigate("/admin", { replace: true });
+} else if (from === "/careers" && jobId) {
+  // 🔥 EXACT JOB MODAL OPEN
+  navigate("/careers", {
+    replace: true,
+    state: { openJobId: jobId }
+  });
+} else if (from === "/careers") {
+  navigate("/careers", { replace: true });
+} else {
+  navigate("/", { replace: true });
+}
+ catch (err) {
       console.error("Login error:", err);
       setError(err.message);
     } finally {
