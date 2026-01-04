@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "../Career/CareersSection.css";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // const API_BASE = "http://localhost:7689";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -63,6 +64,7 @@ const perks = [
 
 const CareersSection = () => {
   const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -130,31 +132,61 @@ const CareersSection = () => {
     return job.salary === "0" || job.salary === 0 || !job.salary;
   };
 
+  // const handleApply = async (job) => {
+  //   if (!user) {
+  //     alert("⚠️ Please login to apply for jobs!");
+  //     window.location.href = "/login";
+  //     return;
+  //   }
+
+  //   setSelectedJob(job);
+
+  //   // 🔥 Load user profile data
+  //   setFormData({
+  //     fullName: user.fullName || "",
+  //     email: user.email || "",
+  //     phone: user.phone || "",
+  //     location: user.location || "",
+  //     collegeName: user.collegeName || "",
+  //     city: user.city || "",
+  //     cgpa: user.cgpa || "",
+  //     currentCompany: user.currentCompany || "",
+  //     currentSalary: user.currentSalary || "",
+  //     expectedSalary: "",
+  //   });
+
+  //   setApplyModal(true);
+  // };
+
   const handleApply = async (job) => {
-    if (!user) {
-      alert("⚠️ Please login to apply for jobs!");
-      window.location.href = "/login";
-      return;
-    }
-
-    setSelectedJob(job);
-
-    // 🔥 Load user profile data
-    setFormData({
-      fullName: user.fullName || "",
-      email: user.email || "",
-      phone: user.phone || "",
-      location: user.location || "",
-      collegeName: user.collegeName || "",
-      city: user.city || "",
-      cgpa: user.cgpa || "",
-      currentCompany: user.currentCompany || "",
-      currentSalary: user.currentSalary || "",
-      expectedSalary: "",
+  if (!user) {
+    navigate("/auth", {
+      state: {
+        from: "/careers",
+        jobId: job.id,
+      },
     });
+    return;
+  }
 
-    setApplyModal(true);
-  };
+  setSelectedJob(job);
+
+  setFormData({
+    fullName: user.fullName || "",
+    email: user.email || "",
+    phone: user.phone || "",
+    location: user.location || "",
+    collegeName: user.collegeName || "",
+    city: user.city || "",
+    cgpa: user.cgpa || "",
+    currentCompany: user.currentCompany || "",
+    currentSalary: user.currentSalary || "",
+    expectedSalary: "",
+  });
+
+  setApplyModal(true);
+};
+
 
   const handleResumeChange = (e) => {
     setResumeFile(e.target.files[0]);
@@ -265,12 +297,38 @@ const CareersSection = () => {
             {error}
           </p>
         )}
-        {!user && (
+        /* {!user && (
           <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
             👤 <Link to="/auth">Login</Link> to apply for jobs
           </p>
         )}
-      </div>
+      </div> */
+      {!user && (
+  <p style={{ color: "#f59e0b", fontSize: "14px", marginTop: "10px" }}>
+    👤 
+    <button
+      type="button"
+      style={{
+        border: "none",
+        background: "none",
+        color: "#3b82f6",
+        cursor: "pointer",
+        textDecoration: "underline",
+        padding: 0,
+        marginLeft: "4px",
+      }}
+      onClick={() =>
+        navigate("/auth", {
+          state: { from: "/careers" }, // general careers redirect
+        })
+      }
+    >
+      Login
+    </button>{" "}
+    to apply for jobs
+  </p>
+)}
+
 
       <div className="careers-layout">
         <div className="careers-left">
