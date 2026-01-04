@@ -340,11 +340,11 @@ onClick={() => {
   }
 </button> */}
 
-  <button   
+ <button   
   className="career-cta"
   style={{ 
-    pointerEvents: "auto !important",     // 👈 YE ADD
-    zIndex: 9999,                        // 👈 YE ADD  
+    pointerEvents: "auto !important",
+    zIndex: 9999,
     opacity: user ? 1 : 0.6,
     cursor: openJobId === role.id ? 'wait' : 'pointer'
   }}
@@ -352,7 +352,7 @@ onClick={() => {
     console.log("✅ WORKING! User:", user, "Job:", role.id);
     handleApply(role);
   }}
-  disabled={!user || openJobId === role.id}
+  // 👈 disabled REMOVE KARO
 >
   {openJobId === role.id 
     ? "Opening..." 
@@ -361,6 +361,7 @@ onClick={() => {
       : "Login to apply →"
   }
 </button>
+
 
 
 
