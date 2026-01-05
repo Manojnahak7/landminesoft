@@ -321,7 +321,7 @@ const CareersSection = () => {
                {/* <button
   className="career-cta"
 onClick={() => {
-    console.log("🔥 Button clicked! User:", user, "Job:", role.id); // 👈 Debug
+  
     handleApply(role);
   }}
                  disabled={!user || openJobId === role.id} // 👈 Loading disable
@@ -349,7 +349,6 @@ onClick={() => {
     cursor: openJobId === role.id ? 'wait' : 'pointer'
   }}
   onClick={() => {
-    console.log("✅ WORKING! User:", user, "Job:", role.id);
     handleApply(role);
   }}
   // 👈 disabled REMOVE KARO
