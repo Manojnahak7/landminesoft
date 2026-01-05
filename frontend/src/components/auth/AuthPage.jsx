@@ -125,7 +125,6 @@ const AuthPage = () => {
         navigate("/", { replace: true });
       }
     } catch (err) {
-      console.error("Login error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -195,7 +194,6 @@ const AuthPage = () => {
         email: form.email,
       });
     } catch (err) {
-      console.error("Register error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
