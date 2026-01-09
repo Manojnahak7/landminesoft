@@ -1074,7 +1074,7 @@ const fetchHiredApps = async () => {
                               >
                                 📥 Resume
                               </a> */}
-                              <a 
+                              {/* <a 
                             
                              href={`${app.resumeUrl}/raw`}
                                 className="download-btn" 
@@ -1083,7 +1083,19 @@ const fetchHiredApps = async () => {
                               title="View Resume in new tab"
                               >
                               📄 Resume
-                              </a>
+                              </a> */}
+
+                              <a 
+  href={app.resumeUrl}  // Original URL ही use karo
+  className="download-btn" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  style={{textDecoration: 'none'}}  // Clean look
+  title="Open in Cloudinary Viewer"
+>
+  📄 Resume
+</a>
+
 
                               {/* <select
                                 className="status-select"
