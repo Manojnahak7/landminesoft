@@ -1084,7 +1084,7 @@ const fetchHiredApps = async () => {
                                 className="download-btn"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                download
+                                {/* download */}
                                 title="Download Resume"
                               >
                                 📥 Resume
