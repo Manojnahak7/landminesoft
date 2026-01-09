@@ -1075,7 +1075,7 @@ const fetchHiredApps = async () => {
                                 📥 Resume
                               </a> */}
                               <a 
-                              {/* href={`${API_BASE}/api/auth/resume/download?resumeUrl=${encodeURIComponent(app.resumeUrl)}`}  */}
+                            
                                href={app.resumeUrl}
                               className="download-btn" 
                               target="_blank" 
