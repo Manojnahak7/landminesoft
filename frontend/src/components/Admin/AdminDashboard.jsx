@@ -1076,8 +1076,8 @@ const fetchHiredApps = async () => {
                               </a> */}
                               <a 
                             
-                               href={app.resumeUrl}
-                              className="download-btn" 
+                             href={`${app.resumeUrl}/raw`}
+                                className="download-btn" 
                               target="_blank" 
                               rel="noopener noreferrer" 
                               title="View Resume in new tab"
