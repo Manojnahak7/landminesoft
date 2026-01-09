@@ -55,7 +55,9 @@ public class ResumeService {
                     file.getBytes(),
                     ObjectUtils.asMap(
                             "folder", "landminesoft/resumes",
-                            "resource_type", "raw"  
+                            "resource_type", "raw",
+                         "url_options", ObjectUtils.asMap("secure", true),  // Viewer ready
+                        "transformation", "f_auto"
                     )
             );
             return (String) uploadResult.get("secure_url");
