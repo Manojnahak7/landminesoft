@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../Nav/Nav.css";
-import logo from "../../assets/landminelogo.png";
+// import logo from "../../assets/landminelogo.png";
+import logo from "../../assets/logo22.png";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 
