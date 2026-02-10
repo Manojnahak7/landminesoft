@@ -338,7 +338,7 @@ const AuthPage = () => {
             </div>
             <div className="work-fields">
               <label>Current Company (Optional)
-                <input name="currentCompany" value={form.currentCompany} onChange={handleChange} placeholder="e.g. TalVoy Partners" />
+                <input name="currentCompany" value={form.currentCompany} onChange={handleChange} placeholder="e.g. Landmine Soft" />
               </label>
               <label>Current Position (Optional)
                 <input name="currentPosition" value={form.currentPosition} onChange={handleChange} placeholder="e.g. Developer" />
