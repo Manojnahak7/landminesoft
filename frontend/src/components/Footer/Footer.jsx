@@ -39,7 +39,7 @@ const Footer = () => {
         <div className="lm-footer-left">
           <h4 className="lm-footer-logo">Landmine Soft</h4>
           <p className="lm-footer-address">
-            Hyderabad, Telangana 500081, India
+            Hyderabad, Telangana 501218, India
           </p>
         </div>
 
